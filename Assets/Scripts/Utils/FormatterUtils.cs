@@ -7,7 +7,7 @@ using System;
 
 public static class FormatterUtils{
     public static string formatCoins = "N0";
-	public static string ToStringNumber(this int input){ return input.ToString("N0").Replace(",",".");}
+	public static string ToStringNumber(this int input){ return input.ToString("N0").Replace(","," ");}
 	public static string ToStringNumber(this float input){ return ToStringNumber((int)input);}
 
 

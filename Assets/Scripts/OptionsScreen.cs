@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class OptionsScreen : SingletonPersistance<OptionsScreen>
+public class OptionsScreen : Singleton<OptionsScreen>
 {
 	public GameObject panel;
 
@@ -19,10 +19,9 @@ public class OptionsScreen : SingletonPersistance<OptionsScreen>
 
 	[SerializeField] Button rateus;
 
-	
-	public override void Awake(){
-		base.Awake();
 
+    void Start()
+    {
 		sounds.onClick.AddListener(OnClickSounds);
 		music.onClick.AddListener(OnClickMusic);
 		rateus.onClick.AddListener(OnClickRateUs);
@@ -37,6 +36,7 @@ public class OptionsScreen : SingletonPersistance<OptionsScreen>
 	}
 	
 	public void Show(){
+
 		FadePanel.FadeIn(panel);
 		this.ExecuteIn(0.05f,()=>{
 			UpdateUI();
@@ -53,7 +53,7 @@ public class OptionsScreen : SingletonPersistance<OptionsScreen>
 		sounds.transform.Find("SoundOff").gameObject.SetActive(!Prefs.GetSoundOn);
 
 		music.transform.Find("MusicOn").gameObject.SetActive(Prefs.GetMusicOn);
-		music.transform.Find("MusicOn").gameObject.SetActive(!Prefs.GetMusicOn);
+		music.transform.Find("MusicOff").gameObject.SetActive(!Prefs.GetMusicOn);
 
 
 	}
@@ -68,9 +68,15 @@ public class OptionsScreen : SingletonPersistance<OptionsScreen>
 	}
 
 	void OnClickSounds(){
+		
 		SoundManager.PlayClick();
+		
 		Prefs.SetSoundOn(!Prefs.GetSoundOn);
-		AudioListener.volume = Prefs.GetSoundOn ? 1f : 0;
+	
+		this.ExecuteIn( Prefs.GetSoundOn ? 0f :  0.3f, () =>{
+			SoundManager.instance.UpdateSettings();
+		});
+
 		UpdateUI();
 		
 	}
@@ -79,7 +85,7 @@ public class OptionsScreen : SingletonPersistance<OptionsScreen>
 	{
 		SoundManager.PlayClick();
 		Prefs.SetMusicOn(!Prefs.GetMusicOn);
-		SoundManager.instance.music.enabled = false;
+		SoundManager.instance.UpdateSettings();
 		UpdateUI();
 
 	}

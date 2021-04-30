@@ -52,12 +52,12 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 		fadingOutDict[background] = fadingOut;
 	}
 
-    public static void FadeIn(GameObject background,bool move=true,float delayFade=0f){
+    public static void FadeIn(GameObject background,bool move=false,float delayFade=0f,bool scale=true){
 		
 		
-        instance.StartCoroutine(instance.FadingIn(background,move,delayFade));
+        instance.StartCoroutine(instance.FadingIn(background,move,delayFade,scale));
     }
-    public IEnumerator FadingIn(GameObject background,bool move=true,float delayFade=0f) {
+    public IEnumerator FadingIn(GameObject background,bool move= false, float delayFade=0f, bool scale = true) {
 		if(IsFadingIn(background) || IsFadingOut(background))
 			yield return new WaitWhile(()=>IsFadingIn(background) || IsFadingOut(background));
 		if(background==null){
@@ -89,7 +89,12 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 			//yield return new WaitForEndOfFrame();
 			iTween.MoveFrom (panel, panel.transform.position + new Vector3 (0f, dist, 0f), duration);
 		}
-		
+
+        if (scale)
+        {
+			iTween.ScaleFrom(panel, panel.transform.localScale * 0.8f, duration);
+		}
+
 		canvasGroup.alpha = 0;
 		if(delayFade>0)		
 			yield return new WaitForSeconds(delayFade);
@@ -125,7 +130,7 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 	}
 
 	
-    public static void FadeOut(GameObject background,bool move=true){
+    public static void FadeOut(GameObject background,bool move=false,bool scale=true){
 	
 		if(background==null){
 			Debug.Log("FadeOut failed obj destroyed");
@@ -133,9 +138,9 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 		}
 		//Debug.Log("FadeOut obj="+background.name);
         
-        instance.StartCoroutine(instance.FadingOut(background,move));
+        instance.StartCoroutine(instance.FadingOut(background,move,scale));
     }
-	public IEnumerator FadingOut(GameObject background,bool move=true) {
+	public IEnumerator FadingOut(GameObject background,bool move=false,bool scale=true) {
 		if(IsFadingIn(background) || IsFadingOut(background))
 			yield return new WaitWhile(()=>IsFadingIn(background) || IsFadingOut(background));
 		
@@ -161,12 +166,18 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 		UpdateFadedPanels();
         
 		var original = Vector3.zero;
-		if(background!=null){
+		var originalScale = Vector3.zero;
+
+		if (background!=null){
 			original = panel.transform.position;
+			originalScale = panel.transform.localScale;
+
 			var mode = canvasObj.renderMode;
 			var dist = mode == RenderMode.ScreenSpaceOverlay ? -Screen.height :-6; 
 			if(move)
 				iTween.MoveAdd(panel, new Vector3 (0f,dist, 0f), duration*2);
+			if (scale)
+				iTween.ScaleAdd(panel, -Vector3.one*0.2f, duration);
 		}
 		
 		var delta = 0.05f;
@@ -188,6 +199,7 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 				yield return new WaitWhile(()=>background!=null && background.GetComponent<iTween>()!=null);
 			if(panel!=null){
 				panel.transform.position = original;
+				panel.transform.localScale = originalScale;
 				background.SetActive(false);
 				//Debug.Log("FadeOut complete obj="+background.name);
 			}else{
