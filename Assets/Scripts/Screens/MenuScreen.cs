@@ -12,7 +12,8 @@ public class MenuScreen : Singleton<MenuScreen>
     [SerializeField] Button multiplayer;
     [SerializeField] Button ranking;
     [SerializeField] Text bankAmount;
- 
+
+
     void Start()
     {
         options.onClick.AddListener(OnButtonClose);
@@ -20,7 +21,7 @@ public class MenuScreen : Singleton<MenuScreen>
         multiplayer.onClick.AddListener(OnButtonMultiplayer);
         ranking.onClick.AddListener(OnButtonRanking);
 
-
+     
 
     }
 
@@ -53,6 +54,7 @@ public class MenuScreen : Singleton<MenuScreen>
     {
         SoundManager.PlayClick();
         ranking.Focus();
+        RankingScreen.instance.Show();
     }
 
 }
