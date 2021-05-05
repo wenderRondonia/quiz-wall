@@ -72,7 +72,7 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 
 
 
-        var panel = background.transform.GetFirstChild().gameObject;
+        var panel = background.transform.GetFirstChild();
         var canvasObj = background.GetComponentInParent<Canvas>();
 		var canvasGroup = canvasObj.GetOrAddComponent<CanvasGroup>();		
 
@@ -87,12 +87,14 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 		var dist = mode == RenderMode.ScreenSpaceOverlay ? -Screen.height :-6; 
 		if(move){
 			//yield return new WaitForEndOfFrame();
-			iTween.MoveFrom (panel, panel.transform.position + new Vector3 (0f, dist, 0f), duration);
+			if(panel!=null)
+				iTween.MoveFrom (panel.gameObject, panel.position + new Vector3 (0f, dist, 0f), duration);
 		}
 
         if (scale)
         {
-			iTween.ScaleFrom(panel, panel.transform.localScale * 0.8f, duration);
+			if (panel != null)
+				iTween.ScaleFrom(panel.gameObject, panel.localScale * 0.8f, duration);
 		}
 
 		canvasGroup.alpha = 0;
@@ -146,7 +148,7 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 		
 	
 
-		var panel = background.transform.GetFirstChild().gameObject;
+		var panel = background.transform.GetFirstChild();
         var canvasObj = background.GetComponentInParent<Canvas>();
 		var canvasGroup = canvasObj.GetOrAddComponent<CanvasGroup>();
 		
@@ -169,15 +171,22 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 		var originalScale = Vector3.zero;
 
 		if (background!=null){
-			original = panel.transform.position;
-			originalScale = panel.transform.localScale;
+			if (panel != null)
+			{
+				original = panel.position;
+
+				originalScale = panel.localScale;
+			}
 
 			var mode = canvasObj.renderMode;
-			var dist = mode == RenderMode.ScreenSpaceOverlay ? -Screen.height :-6; 
-			if(move)
-				iTween.MoveAdd(panel, new Vector3 (0f,dist, 0f), duration*2);
-			if (scale)
-				iTween.ScaleAdd(panel, -Vector3.one*0.2f, duration);
+			var dist = mode == RenderMode.ScreenSpaceOverlay ? -Screen.height :-6;
+			if (panel != null)
+			{
+				if (move)
+					iTween.MoveAdd(panel.gameObject, new Vector3(0f, dist, 0f), duration * 2);
+				if (scale)
+					iTween.ScaleAdd(panel.gameObject, -Vector3.one * 0.2f, duration);
+			}
 		}
 		
 		var delta = 0.05f;
@@ -200,14 +209,17 @@ public class FadePanel : SingletonPersistanceAuto<FadePanel>{
 			if(panel!=null){
 				panel.transform.position = original;
 				panel.transform.localScale = originalScale;
-				background.SetActive(false);
+				
 				//Debug.Log("FadeOut complete obj="+background.name);
 			}else{
 				//Debug.Log("Fadeout complete no obj");
 			}
-            canvasObj.enabled=false;
+            
 		}
 		
+		background.SetActive(false);
+		canvasObj.enabled = false;
+
 		UpdateFadedPanels();
 
 		//if(obj.GetComponent<iTween>()!=null)

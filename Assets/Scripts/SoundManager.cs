@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : Singleton<SoundManager>{
+public class SoundManager : SingletonPersistance<SoundManager>{
 
 	public AudioSource click;
 	public AudioSource button;
@@ -62,10 +62,22 @@ public class SoundManager : Singleton<SoundManager>{
 		if(instance!=null)
 			instance.musicMenu.Play();
 	}
+
 	public static void PlayMusicGame()
 	{
 		if (instance != null)
 			instance.musicGame.Play();
 	}
 
+	public static void StopMusicGame()
+    {
+		if (instance != null)
+			instance.musicGame.Stop();
+	}
+
+	public static void StopMusicMenu()
+	{
+		if (instance != null)
+			instance.musicMenu.Stop();
+	}
 }

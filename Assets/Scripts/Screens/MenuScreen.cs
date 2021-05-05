@@ -42,6 +42,9 @@ public class MenuScreen : Singleton<MenuScreen>
     {
         SoundManager.PlayClick();
         singleplayer.Focus();
+        LoadScreenManager.instance.LoadSceneScreen("Singleplayer");
+        SoundManager.StopMusicMenu();
+        SoundManager.PlayMusicGame();
     }
 
     void OnButtonMultiplayer()
