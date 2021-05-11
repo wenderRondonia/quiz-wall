@@ -10,6 +10,8 @@ public class SoundManager : SingletonPersistance<SoundManager>{
 
 	public AudioSource musicMenu;
 	public AudioSource musicGame;
+	public AudioSource musicMap;
+
 
 	public static void ConfigAudios(GameObject go){
         var audios = go.transform.GetComponentsInChildrenBFS<AudioSource>(includeInactive:true);
@@ -79,5 +81,17 @@ public class SoundManager : SingletonPersistance<SoundManager>{
 	{
 		if (instance != null)
 			instance.musicMenu.Stop();
+	}
+
+	public static void PlayMusicMap()
+	{
+		if (instance != null)
+			instance.musicMap.Play();
+	}
+
+	public static void StopMusicMap()
+	{
+		if (instance != null)
+			instance.musicMap.Stop();
 	}
 }

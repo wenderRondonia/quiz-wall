@@ -161,7 +161,7 @@ public class LoginManager : Singleton<LoginManager> {
         }
         
         loginData.RetrievePrefsInt("customAvatar",a=>Prefs.SetCustomAvatar(a));
-        loginData.RetrievePrefsFloat("experience",e=>Prefs.SetExperience(e));
+        
         loginData.RetrievePrefsFloat("musicvol",m=>Prefs.SetVolume(m));
         loginData.RetrievePrefsBool("music_on",m=>Prefs.SetMusicOn(m));
         loginData.RetrievePrefsBool("snd_on",s=>Prefs.SetSoundOn(s));

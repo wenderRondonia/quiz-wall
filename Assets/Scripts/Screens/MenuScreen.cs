@@ -21,13 +21,15 @@ public class MenuScreen : Singleton<MenuScreen>
         multiplayer.onClick.AddListener(OnButtonMultiplayer);
         ranking.onClick.AddListener(OnButtonRanking);
 
-     
+        SoundManager.PlayMusicMenu();
+
 
     }
 
     void OnEnable()
     {
-        bankAmount.text = "R$ " + Prefs.GetCreditos.ToStringNumber();
+        //TODO
+        bankAmount.text = "R$ " + "999.999";
     }
 
 
@@ -42,9 +44,8 @@ public class MenuScreen : Singleton<MenuScreen>
     {
         SoundManager.PlayClick();
         singleplayer.Focus();
-        LoadScreenManager.instance.LoadSceneScreen("Singleplayer");
+        LoadScreenManager.instance.LoadSceneScreen("Map");
         SoundManager.StopMusicMenu();
-        SoundManager.PlayMusicGame();
     }
 
     void OnButtonMultiplayer()

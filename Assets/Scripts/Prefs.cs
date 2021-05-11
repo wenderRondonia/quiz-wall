@@ -9,16 +9,8 @@ public static class Prefs{
         PlayerPrefs.DeleteKey("avatarUrl");
         PlayerPrefs.DeleteKey("customAvatar");
         PlayerPrefs.DeleteKey("nickname");
-        PlayerPrefs.DeleteKey("LAST_TIME");
-        PlayerPrefs.DeleteKey("percent");
-        PlayerPrefs.DeleteKey("score");
-        PlayerPrefs.DeleteKey("rank");
-        PlayerPrefs.DeleteKey("creditos");
-        PlayerPrefs.DeleteKey("dia");
-        PlayerPrefs.DeleteKey("diaria");
-        PlayerPrefs.DeleteKey("email_account");
         PlayerPrefs.DeleteKey("password");
-        PlayerPrefs.DeleteKey("LOGIN_TYPE");
+        PlayerPrefs.DeleteKey("loginMode");
 
     }
 
@@ -29,17 +21,18 @@ public static class Prefs{
     public static bool GetBool(string key,bool defaultValue=false){
         int value = PlayerPrefs.GetInt(key,defaultValue ? 1 : 0);
         return value==1;
-     }
+    }
 
-    public static LoginMode CurrentLoginMode{
-        get { return (LoginMode)PlayerPrefs.GetInt("LOGIN_TYPE", 0); }
-        set{
-            PlayerPrefs.SetInt("LOGIN_TYPE", (int)value);
+    #region LOGIN
+    public static LoginMode CurrentLoginMode
+    {
+        get { return (LoginMode)PlayerPrefs.GetInt("loginMode", 0); }
+        set
+        {
+            PlayerPrefs.SetInt("loginMode", (int)value);
             PlayerPrefs.Save();
         }
     }
-
-
     public static float GetVolume{get{ return PlayerPrefs.GetFloat("musicvol",0.5f); }}
     public static void SetVolume(float vol){ PlayerPrefs.SetFloat("musicvol",vol); }
     public static bool GetSoundOn{get{ return PlayerPrefs.GetInt("snd_on",1)==1; }}
@@ -61,58 +54,19 @@ public static class Prefs{
     public static void SetCustomAvatar(int avatar){ PlayerPrefs.SetInt("customAvatar",avatar); }
     public static int GetCustomAvatar{get{ return PlayerPrefs.GetInt("customAvatar",-1);}}
 
-   
-   
-    public static void AddExperience(float amount){ SetExperience(GetExperience+amount); }
-    public static void SetExperience(float experience){ PlayerPrefs.SetFloat("percent",experience);}
-    public static float GetExperiencePercent{get{ return (GetExperience%100f);}}
+    #endregion
 
+    public static int GetLevelCompleted(int level){
+        
+        return PlayerPrefs.GetInt("LevelCompleted_" + level);
+    }
 
-    public static float GetExperience{get{ return PlayerPrefs.GetFloat("percent");}}
-    public static void AddScore(int amount){ SetScore(GetScore+amount);}
-    public static void SetScore(int score){ PlayerPrefs.SetInt("score",score); }
-    public static int GetScore{get{return PlayerPrefs.GetInt("score");}}
-    public static void SetRank(int score){ PlayerPrefs.SetInt("rank",score);}
-    public static int GetRank{get{ return PlayerPrefs.GetInt("rank");}}
-    public static int GetLevel{get{ return ((int)GetExperience/100+1); }}
-
-
-     public static void SetPremio(int amount){ PlayerPrefs.SetInt("premio",amount);}
-    public static int GetPremio{get{ return PlayerPrefs.GetInt("premio");}}
-    
-    public static void SetCreditos(int amount){ PlayerPrefs.SetInt("credito",Mathf.Clamp(amount,0,int.MaxValue));}
-    public static int GetCreditos{get{ return Mathf.Clamp(PlayerPrefs.GetInt("credito"),0,int.MaxValue);}}
-    public static void SubtractCreditos(int amount){ SetCreditos(GetCreditos-amount); }
-    public static void AddCreditos(int amount){ SetCreditos(GetCreditos+amount);  }
-    
-    public static int GetAcumuladoMin{get{ return PlayerPrefs.GetInt("acumualadoMin");}}
-    public static int GetAcumuladoMed{get{ return PlayerPrefs.GetInt("acumualadoMed");}}
-    public static int GetAcumuladoMax{get{ return PlayerPrefs.GetInt("acumualadoMax");}}
-
-    public static void SetAcumuladoMin(int amount){ PlayerPrefs.SetInt("acumualadoMin",amount); }
-    public static void SetAcumuladoMed(int amount){ PlayerPrefs.SetInt("acumualadoMed",amount); }
-    public static void SetAcumuladoMax(int amount){ PlayerPrefs.SetInt("acumualadoMax",amount); }
-
-    public static void AddAcumuladoMin(int amount){ SetAcumuladoMin(GetAcumuladoMin+amount); }
-    public static void AddAcumuladoMed(int amount){ SetAcumuladoMed(GetAcumuladoMed+amount); }
-    public static void AddAcumuladoMax(int amount){ SetAcumuladoMax(GetAcumuladoMax+amount); }
-    
-
-
-  
-
-    public static string GetRoletaLastTime{get{ return PlayerPrefs.GetString("LastTimeRoleta"); }}
-    public static void SetRoletaLastTime(string lastTime){ PlayerPrefs.SetString("LastTimeRoleta",lastTime); }
-
-    public static string GetFreeCoinsLastTime{get{ return PlayerPrefs.GetString("FreeCoinsRoleta"); }}
-    public static void SetFreeCoinsLastTime(string lastTime){ PlayerPrefs.SetString("FreeCoinsRoleta",lastTime); }
-
-    public static string GetDiaria{get{ return PlayerPrefs.GetString("diaria");}}
-    public static void SetDiaria(string dia){ PlayerPrefs.SetString("diaria",dia); }
-    public static int GetDia{get{ return PlayerPrefs.GetInt("dia"); }}
-    public static void SetDia(int dia){ PlayerPrefs.SetInt("dia",dia);}
+    public static void SetLevelCompleted(int level, int completed){
+      
+        PlayerPrefs.SetInt("LevelCompleted_" + level, completed);
+    }
 
 
 
-    
+
 }
