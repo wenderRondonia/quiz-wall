@@ -25,9 +25,20 @@ public class BallController : Singleton<BallController>
     
     public IEnumerator DoAnimatingBalls()
     {
+
+        yield return AnimatingInitalBalls();
+
+        yield return AnimatingLastBallToExit1();
+
+        yield return AnimatingLastBallToExit2();
+
+    }
+
+    IEnumerator AnimatingInitalBalls()
+    {
         float delayDuration = 0.4f;
 
-        AnimateBall(ball: 0,spots: new[] { 3 });
+        AnimateBall(ball: 0, spots: new[] { 3 });
         BallTicks[2].Play();
 
         yield return new WaitForSeconds(delayDuration);
@@ -46,18 +57,39 @@ public class BallController : Singleton<BallController>
         BallTicks[2].Play();
 
         yield return new WaitForSeconds(delayDuration);
+    }
 
-
-        AnimateBall(ball: 0, spots: new[] { 4,5,6});
+    IEnumerator AnimatingLastBallToExit1()
+    {
+        AnimateBall(ball: 0, spots: new[] { 4, 5, 6 });
         SoundBallDown.Play();
 
         AnimateBall(ball: 1, spots: new[] { 3 });
         AnimateBall(ball: 2, spots: new[] { 2 });
         AnimateBall(ball: 3, spots: new[] { 1 });
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
+        int smallBallIndex = SmallBallController.instance.GetDisabledSmallBalls().SelectRandom();
+
+        SmallBallController.instance.StartSmallBall(smallBallIndex);
+        
+    }
+
+    IEnumerator AnimatingLastBallToExit2()
+    {
+        AnimateBall(ball: 1, spots: new[] { 4, 5, 6 });
+        SoundBallDown.Play();
+
+        AnimateBall(ball: 2, spots: new[] { 3 });
+        AnimateBall(ball: 3, spots: new[] { 2 });
+        
+        yield return new WaitForSeconds(0.5f);
+
+        int smallBallIndex = SmallBallController.instance.GetDisabledSmallBalls().SelectRandom();
+        SmallBallController.instance.StartSmallBall(smallBallIndex);
 
     }
+
 
     void AnimateBall(int ball, int[] spots, float duration = 0.4f, float rotations = 4f)
     {
@@ -72,7 +104,7 @@ public class BallController : Singleton<BallController>
         iTween.RotateAdd(imageBall.gameObject,Vector3.back * 360 * rotations, duration);
 
         Vector3[] path = new Vector3[spots.Length];
-        for(int i=0; spots.Length < i; i++)
+        for(int i=0; i < spots.Length; i++)
         {
             path[i] = GetSpot(spots[i]);
         }
