@@ -20,7 +20,17 @@ public class GameScreen : MonoBehaviour
 
         yield return BallController.instance.DoAnimatingBalls();
 
+        QuestionScreen.instance.Show();
+
         CountdownScreen.instance.Show();
+
+        yield return QuestionScreen.WaitingQuestionAnswer();
+
+        PickZonesScreen.instance.Show();
+
+        yield return PickZonesScreen.WaitingAnswer();
+
+
 
     }
 

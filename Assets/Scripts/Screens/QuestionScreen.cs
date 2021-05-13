@@ -10,6 +10,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     public List<Button> buttonAnswers;
     QuestionData currentQuestionData;
     int currentQuestionNumber;
+    int indexAnswered=-1;
     
     void Start()
     {
@@ -20,11 +21,28 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         }
     }
 
+    public static IEnumerator WaitingQuestionAnswer()
+    {
+        yield return new WaitUntil(() => instance.indexAnswered != -1);
+    }
+
+    public override void Show()
+    {
+        base.Show();
+        indexAnswered = -1;
+        currentQuestionData = null;
+    }
+
     void OnButtonAnswer(int index)
     {
         SoundManager.PlayClick();
+        indexAnswered = index;
+        
+        this.ExecuteIn(0.5f, () => { Hide(); });
 
     }
+
+    
 
     public void SetupQuestion(int questionNumber, int questionCount,QuestionData questionData)
     {
@@ -37,6 +55,13 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         {
             var textAnswer = buttonAnswers[i].GetComponentInChildren<Text>();
             textAnswer.text = questionData.answers[i];
+            buttonAnswers[i].gameObject.SetActive(true);
+        }
+
+        //deactive unused buttons
+        for (int i = questionData.answers.Length; i < buttonAnswers.Count;i++)
+        {
+            buttonAnswers[i].gameObject.SetActive(false);
         }
     }
 
