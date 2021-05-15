@@ -11,6 +11,7 @@ public class SoundManager : SingletonPersistance<SoundManager>{
 	public AudioSource musicMenu;
 	public AudioSource musicGame;
 	public AudioSource musicMap;
+	public AudioSource[] smallBallSounds;
 
 
 	public static void ConfigAudios(GameObject go){
@@ -52,6 +53,12 @@ public class SoundManager : SingletonPersistance<SoundManager>{
             }
         }
 
+	}
+
+	public static void PlaySmallBallSoundRandom()
+    {
+		if (instance != null)
+			instance.smallBallSounds.SelectRandom().Play();
 	}
 
 	public static void PlayClick(){

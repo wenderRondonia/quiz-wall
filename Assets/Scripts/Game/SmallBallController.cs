@@ -7,7 +7,7 @@ using System.Linq;
 public class SmallBallController : Singleton<SmallBallController>
 {
     public Transform smallBallParent;
-    public GameObject holder;
+    public GameObject initalHolder;
     List<Image> smallBalls = new List<Image>();
 
 
@@ -20,7 +20,7 @@ public class SmallBallController : Singleton<SmallBallController>
     {
         List<int> list = new List<int>();
         smallBalls.ForEach(s=> {
-            if (s.isActiveAndEnabled)
+            if (!s.isActiveAndEnabled)
                 list.Add(s.transform.GetSiblingIndex());
 
         });
@@ -35,7 +35,7 @@ public class SmallBallController : Singleton<SmallBallController>
 
     public void ReleaseHolder()
     {
-        holder.SetActive(false);
+        initalHolder.SetActive(false);
     }
 
 

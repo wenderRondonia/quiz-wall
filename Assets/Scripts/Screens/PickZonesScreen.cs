@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PickZonesScreen : BaseScreen<PickZonesScreen>
 {
+    public Text textTitle;
     public List<Button> buttonsZones;
     int indexAnswered1 = -1;
     int indexAnswered2 = -1;
@@ -21,12 +22,23 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
 
     public static IEnumerator WaitingAnswer()
     {
-        yield return new WaitUntil(() => instance.indexAnswered1 != -1 && instance.indexAnswered2 != -1);
+
+        if (instance.useThreeZones)
+        {
+            yield return new WaitUntil(() => instance.indexAnswered1 != -1 && instance.indexAnswered2 != -1 && instance.indexAnswered3 != -1);
+        }
+        else
+        {
+            yield return new WaitUntil(() => instance.indexAnswered1 != -1 && instance.indexAnswered2 != -1);
+        }
     }
 
     public override void Show()
     {
         base.Show();
+
+        textTitle.text = "PICK "+(useThreeZones ? 3 : 2)+" ZONES";
+
         indexAnswered1 = -1;
         indexAnswered2 = -1;
         indexAnswered3 = -1;
@@ -42,7 +54,7 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
         }else if (indexAnswered2 == -1)
         {
             indexAnswered2 = index;
-            if(useThreeZones)
+            if(!useThreeZones)
                 this.ExecuteIn(0.5f, () => { Hide(); });
         }
         else if(indexAnswered3 == -1)

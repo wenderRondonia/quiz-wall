@@ -43,16 +43,20 @@ public class MapSreen : MonoBehaviour
             return true;
         }
 
-        return Prefs.GetLevelCompleted(index-1) >= 3;
+        return Prefs.GetLevelCompleted(index-1) > 0;
     }
 
     void OnButtonLevel(int index)
     {
         var sprite = LevelButtons[index].image.sprite;
-        if (sprite == spriteUnlocked[0] || sprite==spriteUnlocked[3] || sprite==spriteUnlocked[4])
+
+        if (sprite==spriteUnlocked[4])
         {
+            Debug.Log("Already completed");
             return;
         }
+
+        LevelButtons[index].Focus();
 
         LevelIndexSelected = index;
         SoundManager.PlayClick();

@@ -39,12 +39,12 @@ public class LoadScreenManager : SingletonPersistance<LoadScreenManager>
 	{
 		loadedScene = false;
 
-		Debug.Log("LoadScreenManager.LoadingSceneScreen sceneName=" + sceneName);
+		//Debug.Log("LoadScreenManager.LoadingSceneScreen sceneName=" + sceneName);
 
 		Show();
-		Debug.Log("LoadScreenManager.LoadingSceneScreen Show FadePanel.duration=" + FadePanel.duration);
+		//Debug.Log("LoadScreenManager.LoadingSceneScreen Show FadePanel.duration=" + FadePanel.duration);
 		yield return new WaitForSeconds(FadePanel.duration);
-		Debug.Log("LoadScreenManager.LoadingSceneScreen LoadingAnimation");
+		//Debug.Log("LoadScreenManager.LoadingSceneScreen LoadingAnimation");
 		//StartCoroutine(LoadingAnimation());
 
 		var startTime = System.DateTime.UtcNow;
@@ -62,7 +62,7 @@ public class LoadScreenManager : SingletonPersistance<LoadScreenManager>
 
 		loadedScene = true;
 
-		Debug.Log("LoadScreenManager.LoadingSceneScreen Hide");
+		//Debug.Log("LoadScreenManager.LoadingSceneScreen Hide");
 
 		//yield return new WaitUntil(() => bar.fillAmount >= 1f);
 		Hide();

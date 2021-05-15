@@ -7,11 +7,13 @@ public class CountdownScreen : BaseScreen<CountdownScreen>
 {
     public AudioSource[] soundsCountdown;
     public Text textCountdown;
-    public override void Show()
-    {
-        base.Show();
 
-        StartCoroutine(Showing());
+    public IEnumerator DoingCountdown()
+    {
+        Show();
+
+        yield return Showing();
+
     }
 
 

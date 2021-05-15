@@ -91,17 +91,22 @@ public class BallController : Singleton<BallController>
     }
 
 
-    void AnimateBall(int ball, int[] spots, float duration = 0.4f, float rotations = 4f)
+    void AnimateBall(int ball, int[] spots, float duration = 0.6f)
     {
-        StartCoroutine(AnimatingBall(ball, spots, duration, rotations));
+        StartCoroutine(AnimatingBall(ball, spots, duration));
     }
 
-    IEnumerator AnimatingBall(int ball,int[] spots,float duration = 0.4f,float rotations=4f)
+    IEnumerator AnimatingBall(int ball,int[] spots,float duration = 0.6f)
     {
         Image imageBall = GetBall(ball);
         
 
-        iTween.RotateAdd(imageBall.gameObject,Vector3.back * 360 * rotations, duration);
+        iTween.RotateAdd(imageBall.gameObject,iTween.Hash(
+            "easetype",iTween.EaseType.linear,
+            "looptype",iTween.LoopType.loop,
+            "amount", Vector3.back * 360 * 2, 
+            "time", duration
+        ));
 
         Vector3[] path = new Vector3[spots.Length];
         for(int i=0; i < spots.Length; i++)
@@ -110,6 +115,7 @@ public class BallController : Singleton<BallController>
         }
 
         var hash = iTween.Hash(
+            "name", "Movement",
             "easetype", iTween.EaseType.linear,
             "time", duration
         );
@@ -130,6 +136,9 @@ public class BallController : Singleton<BallController>
         
         iTween.MoveTo(imageBall.gameObject, hash);
 
-        yield return imageBall.gameObject.WaitingItween();
+        yield return imageBall.gameObject.WaitingItween("Movement");
+        
+        imageBall.RemoveTweens();
+
     }
 }

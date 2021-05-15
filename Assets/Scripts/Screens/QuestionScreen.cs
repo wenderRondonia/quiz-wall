@@ -31,20 +31,48 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         base.Show();
         indexAnswered = -1;
         currentQuestionData = null;
+
+        foreach (var buttonAnswer in buttonAnswers)
+        {
+            buttonAnswer.interactable = true;
+        }
+        
+        HideAnswers();
     }
 
     void OnButtonAnswer(int index)
     {
+        if (indexAnswered != -1)
+        {
+            Debug.Log("OnButtonAnswer already indexAnswered=" + indexAnswered);
+            return;
+        }
+
         SoundManager.PlayClick();
         indexAnswered = index;
-        
-        this.ExecuteIn(0.5f, () => { Hide(); });
+        buttonAnswers[index].interactable = false;
+        this.ExecuteIn(0.8f, () => { Hide(); });
 
     }
 
-    
+    public void ShowAnswers()
+    {
+        foreach (var buttonAnswer in buttonAnswers)
+        {
+            buttonAnswer.gameObject.SetActive(true);
+        }
+    }
 
-    public void SetupQuestion(int questionNumber, int questionCount,QuestionData questionData)
+    public void HideAnswers()
+    {
+        foreach (var buttonAnswer in buttonAnswers)
+        {
+            buttonAnswer.gameObject.SetActive(false);
+        }
+    }
+
+
+    public void SetupQuestion(int questionNumber,int questionCount, QuestionData questionData)
     {
         currentQuestionData = questionData;
         currentQuestionNumber = questionNumber;
