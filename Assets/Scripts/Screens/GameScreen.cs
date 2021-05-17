@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameScreen : MonoBehaviour
+public class GameScreen : Singleton<GameScreen>
 {
+    public Sprite spriteHighlightedPin;
+    public Sprite spriteDefaultPin;
+
+
 
     void Start()
     {
@@ -16,19 +20,25 @@ public class GameScreen : MonoBehaviour
 
     IEnumerator MainGameLoop()
     {
-        yield return RoundScreen.ShowingNewRound();
+        //yield return RoundScreen.ShowingNewRound();
 
-        yield return BallController.instance.DoAnimatingBalls();
+       // yield return BallController.instance.DoAnimatingBalls();
 
         yield return DoingFirstQuestion();
 
-        yield return DoingPickZones();
+       // yield return DoingPickZones();
+
+        yield return new WaitForSeconds(1);
+        SmallBallController.instance.StartSmallBall(2);
+        SmallBallController.instance.StartSmallBall(3);
+        SmallBallController.instance.ReleaseHolder();
 
     }
 
     IEnumerator DoingFirstQuestion()
     {
         QuestionScreen.instance.Show();
+        QuestionScreen.instance.ShowAnswersPreview();
 
         yield return new WaitForSeconds(0.5f);
 
@@ -47,9 +57,9 @@ public class GameScreen : MonoBehaviour
 
         yield return PickZonesScreen.WaitingAnswer();
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
-        SmallBallController.instance.ReleaseHolder();
+
     }
 
 

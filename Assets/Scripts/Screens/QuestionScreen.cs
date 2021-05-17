@@ -29,6 +29,12 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     public override void Show()
     {
         base.Show();
+
+        ResetQuestion();
+    }
+
+    void ResetQuestion()
+    {
         indexAnswered = -1;
         currentQuestionData = null;
 
@@ -36,8 +42,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         {
             buttonAnswer.interactable = true;
         }
-        
-        HideAnswers();
+
     }
 
     void OnButtonAnswer(int index)
@@ -55,11 +60,24 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
     }
 
+
+    public void ShowAnswersPreview()
+    {
+        foreach (var buttonAnswer in buttonAnswers)
+        {
+            buttonAnswer.image.color = new Color(1,1,1,0.5f);
+            buttonAnswer.gameObject.SetActive(true);
+            buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
+        }
+    }
+
+
     public void ShowAnswers()
     {
         foreach (var buttonAnswer in buttonAnswers)
         {
-            buttonAnswer.gameObject.SetActive(true);
+            buttonAnswer.image.color = Color.white;
+            buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(true);
         }
     }
 

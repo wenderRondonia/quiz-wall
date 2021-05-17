@@ -11,6 +11,8 @@ public class SoundManager : SingletonPersistance<SoundManager>{
 	public AudioSource musicMenu;
 	public AudioSource musicGame;
 	public AudioSource musicMap;
+	public AudioSource ballInsideSum;
+
 	public AudioSource[] smallBallSounds;
 
 
@@ -100,5 +102,11 @@ public class SoundManager : SingletonPersistance<SoundManager>{
 	{
 		if (instance != null)
 			instance.musicMap.Stop();
+	}
+
+	public static void PlayBallInsideSum()
+    {
+		if (instance != null)
+			instance.ballInsideSum.PlayOneShot(instance.ballInsideSum.clip);
 	}
 }
