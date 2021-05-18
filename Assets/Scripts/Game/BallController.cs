@@ -11,6 +11,7 @@ public class BallController : Singleton<BallController>
     public AudioSource BallReload;
     public AudioSource SoundBallUp;
     public AudioSource SoundBallDown;
+    public AudioSource SoundPipe;
 
 
     Image GetBall(int ballIndex)
@@ -98,6 +99,9 @@ public class BallController : Singleton<BallController>
 
     IEnumerator AnimatingBall(int ball,int[] spots,float duration = 0.6f)
     {
+
+        SoundPipe.Play();
+
         Image imageBall = GetBall(ball);
         
 
@@ -139,6 +143,8 @@ public class BallController : Singleton<BallController>
         yield return imageBall.gameObject.WaitingItween("Movement");
         
         imageBall.RemoveTweens();
+
+        SoundBallUp.Play();
 
     }
 }

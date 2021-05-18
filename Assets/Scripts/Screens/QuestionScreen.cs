@@ -7,7 +7,13 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 {
     public Text textTitle;
     public Text textQuestion;
+    public Sprite spriteCorrect;
+    public Sprite spriteIncorrect;
     public List<Button> buttonAnswers;
+
+    public AudioSource SoundRightAnswer;
+    public AudioSource SoundWrongAnswer;
+
     QuestionData currentQuestionData;
     int currentQuestionNumber;
     int indexAnswered=-1;
@@ -80,6 +86,38 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
             buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(true);
         }
     }
+
+
+    public void ShowCorrectAnswer()
+    {
+
+        int correctAnswerIndex = currentQuestionData.rightAnswer;
+
+        foreach (var buttonAnswer in buttonAnswers)
+        {
+            int index = buttonAnswer.transform.GetSiblingIndex();
+
+            
+
+            if(index == indexAnswered || index == correctAnswerIndex)
+            {
+                buttonAnswer.image.sprite = index == correctAnswerIndex ? spriteCorrect : spriteIncorrect;
+            }
+          
+
+        }
+
+        if (correctAnswerIndex == indexAnswered)
+        {
+            SoundRightAnswer.Play();
+        }
+        else
+        {
+            SoundWrongAnswer.Play();
+        }
+
+    }
+
 
     public void HideAnswers()
     {

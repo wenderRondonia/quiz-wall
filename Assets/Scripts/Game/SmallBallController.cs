@@ -8,6 +8,9 @@ public class SmallBallController : Singleton<SmallBallController>
 {
     public Transform smallBallParent;
     public GameObject initalHolder;
+
+    public AudioSource soundRelease;
+
     List<Image> smallBalls = new List<Image>();
 
 
@@ -36,6 +39,8 @@ public class SmallBallController : Singleton<SmallBallController>
     public void ReleaseHolder()
     {
         initalHolder.SetActive(false);
+        soundRelease.Play();
+
     }
 
 
