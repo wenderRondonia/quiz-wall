@@ -35,7 +35,9 @@ public class BallController : Singleton<BallController>
 
     }
 
-    IEnumerator AnimatingInitalBalls()
+    //TODO:  make generic fucntion to enter/exiting balls
+
+    public IEnumerator AnimatingInitalBalls()
     {
         float delayDuration = 0.4f;
 
@@ -60,7 +62,7 @@ public class BallController : Singleton<BallController>
         yield return new WaitForSeconds(delayDuration);
     }
 
-    IEnumerator AnimatingLastBallToExit1()
+    public IEnumerator AnimatingLastBallToExit1()
     {
         AnimateBall(ball: 0, spots: new[] { 4, 5, 6 });
         SoundBallDown.Play();
@@ -70,13 +72,11 @@ public class BallController : Singleton<BallController>
         AnimateBall(ball: 3, spots: new[] { 1 });
 
         yield return new WaitForSeconds(0.5f);
-        int smallBallIndex = SmallBallController.instance.GetDisabledSmallBalls().SelectRandom();
+        SmallBallController.instance.ActivateRandomSmallBall();
 
-        SmallBallController.instance.StartSmallBall(smallBallIndex);
-        
     }
 
-    IEnumerator AnimatingLastBallToExit2()
+    public IEnumerator AnimatingLastBallToExit2()
     {
         AnimateBall(ball: 1, spots: new[] { 4, 5, 6 });
         SoundBallDown.Play();
@@ -86,8 +86,7 @@ public class BallController : Singleton<BallController>
         
         yield return new WaitForSeconds(0.5f);
 
-        int smallBallIndex = SmallBallController.instance.GetDisabledSmallBalls().SelectRandom();
-        SmallBallController.instance.StartSmallBall(smallBallIndex);
+        SmallBallController.instance.ActivateRandomSmallBall();
 
     }
 

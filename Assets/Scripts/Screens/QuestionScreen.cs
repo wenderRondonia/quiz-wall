@@ -36,10 +36,10 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     {
         base.Show();
 
-        ResetQuestion();
+        //ResetQuestion();
     }
 
-    void ResetQuestion()
+    public void ResetQuestion()
     {
         indexAnswered = -1;
         currentQuestionData = null;
@@ -69,19 +69,34 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
     public void ShowAnswersPreview()
     {
-        foreach (var buttonAnswer in buttonAnswers)
+        if (currentQuestionData == null)
         {
+            Debug.Log("ShowAnswersPreview failed: no question data");
+            return;
+        }
+        for (int i = 0; i < currentQuestionData.answers.Length; i++)
+        {
+            var buttonAnswer = buttonAnswers[i];
             buttonAnswer.image.color = new Color(1,1,1,0.5f);
             buttonAnswer.gameObject.SetActive(true);
             buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
+        }
+
+        //deactive unused buttons
+        for (int i = currentQuestionData.answers.Length; i < buttonAnswers.Count; i++)
+        {
+            var buttonAnswer = buttonAnswers[i];
+
+            buttonAnswer.gameObject.SetActive(false);
         }
     }
 
 
     public void ShowAnswers()
     {
-        foreach (var buttonAnswer in buttonAnswers)
+        for (int i = 0; i < currentQuestionData.answers.Length; i++)
         {
+            var buttonAnswer = buttonAnswers[i];
             buttonAnswer.image.color = Color.white;
             buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(true);
         }
@@ -93,18 +108,18 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
         int correctAnswerIndex = currentQuestionData.rightAnswer;
 
-        foreach (var buttonAnswer in buttonAnswers)
+        for (int i = 0; i < currentQuestionData.answers.Length; i++)
         {
-            int index = buttonAnswer.transform.GetSiblingIndex();
+            var buttonAnswer = buttonAnswers[i];
 
-            
+            int index = buttonAnswer.transform.GetSiblingIndex();
+                        
 
             if(index == indexAnswered || index == correctAnswerIndex)
             {
                 buttonAnswer.image.sprite = index == correctAnswerIndex ? spriteCorrect : spriteIncorrect;
             }
           
-
         }
 
         if (correctAnswerIndex == indexAnswered)
@@ -127,7 +142,12 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         }
     }
 
-
+    /// <summary>
+    /// Fill UI with question data
+    /// </summary>
+    /// <param name="questionNumber"></param>
+    /// <param name="questionCount"></param>
+    /// <param name="questionData"></param>
     public void SetupQuestion(int questionNumber,int questionCount, QuestionData questionData)
     {
         currentQuestionData = questionData;
@@ -137,15 +157,9 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         textQuestion.text = questionData.question;
         for(int i=0; i < questionData.answers.Length;i++)
         {
-            var textAnswer = buttonAnswers[i].GetComponentInChildren<Text>();
+            var textAnswer = buttonAnswers[i].GetComponentInChildren<Text>(true);
             textAnswer.text = questionData.answers[i];
-            buttonAnswers[i].gameObject.SetActive(true);
-        }
-
-        //deactive unused buttons
-        for (int i = questionData.answers.Length; i < buttonAnswers.Count;i++)
-        {
-            buttonAnswers[i].gameObject.SetActive(false);
+            
         }
     }
 

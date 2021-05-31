@@ -7,10 +7,23 @@ public class SmallBallBehaviour : MonoBehaviour
 {
     GameObject lastPinHit;
     Vector3 originalPos;
+    SumArea sumAreaReached;
     void Awake()
     {
         originalPos = transform.position;
     }
+
+    public bool HasReachSumArea()
+    {
+        return sumAreaReached != null;
+    }
+
+    public void ReachSumArea(SumArea sumArea)
+    {
+        sumAreaReached = sumArea;
+    }
+
+
     public void OnCollisionEnter2D(Collision2D collision2D)
     {
         //Debug.Log("OnCollisionEnter2D");
@@ -49,6 +62,13 @@ public class SmallBallBehaviour : MonoBehaviour
 
     }
 
+    public void ResetPosition()
+    {
+        transform.position = originalPos;
+    }
+    
+
+
 #if UNITY_EDITOR
 
     [UnityEditor.MenuItem("Tools/SmallBallBehaviour/Reset Postiions")]
@@ -57,7 +77,7 @@ public class SmallBallBehaviour : MonoBehaviour
         var smallBalls = GameObject.Find("GameScreen/Wall/SmallBallController/SmallBalls").GetComponentsInChildren<SmallBallBehaviour>();
         foreach (var smallBall in smallBalls)
         {
-            smallBall.transform.position = smallBall.originalPos;
+            smallBall.ResetPosition();
 
         }
     }

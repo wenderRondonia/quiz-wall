@@ -6,6 +6,13 @@ using UnityEngine.UI;
 public class SumController : Singleton<SumController>
 {
     public Transform SumsParent;
+    bool sumActived;
+
+    public bool IsSumActive()
+    {
+        return sumActived;
+    }
+
 
     public void SetActiveAll(bool on)
     {
@@ -22,5 +29,7 @@ public class SumController : Singleton<SumController>
         texName = texName.Replace("On","");
         texName += on ? "On" : "Off";
         sumArea.sprite = Resources.Load<Sprite>("Sums/" + texName);
+
+        sumActived = on;
     }
 }

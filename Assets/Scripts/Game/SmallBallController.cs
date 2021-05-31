@@ -11,12 +11,24 @@ public class SmallBallController : Singleton<SmallBallController>
 
     public AudioSource soundRelease;
 
-    List<Image> smallBalls = new List<Image>();
+    List<SmallBallBehaviour> smallBalls = new List<SmallBallBehaviour>();
 
 
     void Start()
     {
-        smallBalls = smallBallParent.GetComponentsInChildren<Image>(true).ToList();
+        smallBalls = smallBallParent.GetComponentsInChildren<SmallBallBehaviour>(true).ToList();
+    }
+
+    public List<SmallBallBehaviour> GetActiveSmallBalls()
+    {
+        List<SmallBallBehaviour> list = new List<SmallBallBehaviour>();
+        smallBalls.ForEach(s => {
+            if (s.isActiveAndEnabled)
+                list.Add(s);
+
+        });
+
+        return list;
     }
 
     public List<int> GetDisabledSmallBalls()
@@ -31,6 +43,13 @@ public class SmallBallController : Singleton<SmallBallController>
         return list;
     }
 
+    public void ActivateRandomSmallBall()
+    {
+        int smallBallIndex = GetDisabledSmallBalls().SelectRandom();
+
+        StartSmallBall(smallBallIndex);
+    }
+
     public void StartSmallBall(int index)
     {
         smallBalls[index].gameObject.SetActive(true);
@@ -43,5 +62,24 @@ public class SmallBallController : Singleton<SmallBallController>
 
     }
 
+    public bool IsCompletedAllSmallBalls()
+    {
+        return GetActiveSmallBalls().TrueForAll(s=>s.HasReachSumArea()) ;
+    }
+
+    public void ResetSmallBalls()
+    {
+        foreach (var smallBall in smallBalls)
+        {
+            smallBall.ResetPosition();
+        }
+    }
+
+    public IEnumerator DoingSmallBalls()
+    {
+        ReleaseHolder();
+
+        yield return new WaitUntil(() => IsCompletedAllSmallBalls());
+    }
 
 }
