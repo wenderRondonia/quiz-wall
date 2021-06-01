@@ -74,7 +74,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
             Debug.Log("ShowAnswersPreview failed: no question data");
             return;
         }
-        for (int i = 0; i < currentQuestionData.answers.Length; i++)
+        for (int i = 0; i < currentQuestionData.AnswersShuffled.Count; i++)
         {
             var buttonAnswer = buttonAnswers[i];
             buttonAnswer.image.color = new Color(1,1,1,0.5f);
@@ -83,7 +83,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         }
 
         //deactive unused buttons
-        for (int i = currentQuestionData.answers.Length; i < buttonAnswers.Count; i++)
+        for (int i = currentQuestionData.AnswersShuffled.Count; i < buttonAnswers.Count; i++)
         {
             var buttonAnswer = buttonAnswers[i];
 
@@ -94,7 +94,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
     public void ShowAnswers()
     {
-        for (int i = 0; i < currentQuestionData.answers.Length; i++)
+        for (int i = 0; i < currentQuestionData.AnswersShuffled.Count; i++)
         {
             var buttonAnswer = buttonAnswers[i];
             buttonAnswer.image.color = Color.white;
@@ -108,7 +108,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
         int correctAnswerIndex = currentQuestionData.rightAnswer;
 
-        for (int i = 0; i < currentQuestionData.answers.Length; i++)
+        for (int i = 0; i < currentQuestionData.AnswersShuffled.Count; i++)
         {
             var buttonAnswer = buttonAnswers[i];
 
@@ -155,10 +155,10 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
         textTitle.text = "QUESTION " + questionNumber + "/" + questionCount;
         textQuestion.text = questionData.question;
-        for(int i=0; i < questionData.answers.Length;i++)
+        for(int i=0; i < questionData.AnswersShuffled.Count; i++)
         {
             var textAnswer = buttonAnswers[i].GetComponentInChildren<Text>(true);
-            textAnswer.text = questionData.answers[i];
+            textAnswer.text = questionData.AnswersShuffled[i];
             
         }
     }
@@ -166,11 +166,5 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
 }
 
-[System.Serializable]
-public class QuestionData
-{
-    public string question;
-    public string[] answers;
-    public int rightAnswer;
 
-}
+

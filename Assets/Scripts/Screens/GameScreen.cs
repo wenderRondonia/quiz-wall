@@ -12,6 +12,8 @@ public class GameScreen : Singleton<GameScreen>
 
     void Start()
     {
+        QuestionReader.ReadQuestions();
+
         SoundManager.PlayMusicGame();
 
         StartCoroutine(MainGameLoop());
@@ -59,11 +61,7 @@ public class GameScreen : Singleton<GameScreen>
 
         QuestionScreen.instance.ResetQuestion();
 
-        QuestionScreen.instance.SetupQuestion(1,2,new QuestionData() { 
-            question="Which Epoch in the history of europe was the first one in chronological order?" ,
-            answers=new [] {"Renaissance","Romanesque"},
-            rightAnswer= 1,
-        });
+        QuestionScreen.instance.SetupQuestion(1,2, QuestionReader.questions[0]);
 
         QuestionScreen.instance.Show();
         QuestionScreen.instance.ShowAnswersPreview();
@@ -107,12 +105,7 @@ public class GameScreen : Singleton<GameScreen>
 
         QuestionScreen.instance.ResetQuestion();
 
-        QuestionScreen.instance.SetupQuestion(1, 2, new QuestionData()
-        {
-            question = "What do we call the galaxy we live in?",
-            answers = new[] { "The Milky Way", "Galaxy NGC 6872" },
-            rightAnswer = 0,
-        });
+        QuestionScreen.instance.SetupQuestion(1, 2, QuestionReader.questions[1]);
 
         QuestionScreen.instance.Show();
         QuestionScreen.instance.ShowAnswersPreview();
