@@ -12,97 +12,104 @@ public class BallController : Singleton<BallController>
     public AudioSource SoundBallUp;
     public AudioSource SoundBallDown;
     public AudioSource SoundPipe;
-
+    public Image Ball;
+    int finalSpot = 8;
 
     Image GetBall(int ballIndex)
     {
+
+        if (ballIndex >= BallsParent.childCount)
+        {
+            Debug.Log("GetBall failed ballindex="+ballIndex);
+            return null;
+        }
         return BallsParent.GetChild(ballIndex).GetComponent<Image>();
+    }
+
+    public bool IsBallsAnimating()
+    {
+        for (int i=0; i < BallsParent.childCount;i++)
+        {
+            var ball = GetBall(i);
+            if (ball.HasITween())
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     Vector3 GetSpot(int spot)
     {
+        if (spot >= SpotsParent.childCount)
+        {
+            Debug.Log("GetSpot spot="+ spot);
+            return Vector3.zero;
+        }
         return SpotsParent.GetChild(spot).position;
     }
-    
-    public IEnumerator DoAnimatingBalls()
+
+    public IEnumerator AnimatingInitalBalls(int ballCount)
     {
+        float delayDuration = 0.4f;                
 
-        yield return AnimatingInitalBalls();
+        for (int i=0;i < ballCount;i++) {
+            
+            var newBall = GameObject.Instantiate(Ball,parent:BallsParent);
+            newBall.gameObject.SetActive(true);
+            newBall.transform.position = GetSpot(0);
 
-        yield return AnimatingLastBallToExit1();
+            AnimateBall(ball: i, spots: new[] { finalSpot - i });
+            
+            BallTicks[2].Play();
 
-        yield return AnimatingLastBallToExit2();
+            yield return new WaitForSeconds(delayDuration);
+        }
+
+        yield return new WaitWhile(IsBallsAnimating);
 
     }
 
-    //TODO:  make generic fucntion to enter/exiting balls
-
-    public IEnumerator AnimatingInitalBalls()
+    public IEnumerator AnimatingLastBallToExit()
     {
-        float delayDuration = 0.4f;
-
-        AnimateBall(ball: 0, spots: new[] { 3 });
-        BallTicks[2].Play();
-
-        yield return new WaitForSeconds(delayDuration);
-
-        AnimateBall(ball: 1, spots: new[] { 2 });
-        BallTicks[2].Play();
-
-        yield return new WaitForSeconds(delayDuration);
-
-        AnimateBall(ball: 2, spots: new[] { 1 });
-        BallTicks[2].Play();
-
-        yield return new WaitForSeconds(delayDuration);
-
-        AnimateBall(ball: 3, spots: new[] { 0 });
-        BallTicks[2].Play();
-
-        yield return new WaitForSeconds(delayDuration);
-    }
-
-    public IEnumerator AnimatingLastBallToExit1()
-    {
-        AnimateBall(ball: 0, spots: new[] { 4, 5, 6 });
         SoundBallDown.Play();
 
-        AnimateBall(ball: 1, spots: new[] { 3 });
-        AnimateBall(ball: 2, spots: new[] { 2 });
-        AnimateBall(ball: 3, spots: new[] { 1 });
+        Debug.Log("AnimatingLastBallToExit");
 
-        yield return new WaitForSeconds(0.5f);
-        SmallBallController.instance.ActivateRandomSmallBall();
+        AnimateBall(ball: 0, spots: new[] { SpotsParent.childCount-3, SpotsParent.childCount - 2, SpotsParent.childCount - 1 }, oncomplete:image=> {
+            Destroy(image.gameObject);
+        });
 
-    }
+        for (int i=1; i < BallsParent.childCount;i++)
+        {
+            Debug.Log("AnimatingLastBallToExit Ball i="+i+" spot="+ (finalSpot - i));
+            AnimateBall(ball: i, spots: new[] { finalSpot - i +1 });
+        }
 
-    public IEnumerator AnimatingLastBallToExit2()
-    {
-        AnimateBall(ball: 1, spots: new[] { 4, 5, 6 });
-        SoundBallDown.Play();
-
-        AnimateBall(ball: 2, spots: new[] { 3 });
-        AnimateBall(ball: 3, spots: new[] { 2 });
         
-        yield return new WaitForSeconds(0.5f);
-
-        SmallBallController.instance.ActivateRandomSmallBall();
+        yield return new WaitWhile(IsBallsAnimating);
 
     }
 
 
-    void AnimateBall(int ball, int[] spots, float duration = 0.6f)
+
+    void AnimateBall(int ball, int[] spots, float duration = 0.6f, System.Action<Image> oncomplete = null)
     {
-        StartCoroutine(AnimatingBall(ball, spots, duration));
+        StartCoroutine(AnimatingBall(ball, spots, duration,oncomplete));
     }
 
-    IEnumerator AnimatingBall(int ball,int[] spots,float duration = 0.6f)
+    IEnumerator AnimatingBall(int ball,int[] spots,float duration = 0.6f,System.Action<Image> oncomplete=null)
     {
 
         SoundPipe.Play();
 
         Image imageBall = GetBall(ball);
-        
+
+        if (imageBall == null)
+        {
+            yield break;
+        }
 
         iTween.RotateAdd(imageBall.gameObject,iTween.Hash(
             "easetype",iTween.EaseType.linear,
@@ -144,6 +151,8 @@ public class BallController : Singleton<BallController>
         imageBall.RemoveTweens();
 
         SoundBallUp.Play();
+
+        if (oncomplete != null) oncomplete(imageBall);
 
     }
 }

@@ -69,9 +69,13 @@ public class SmallBallController : Singleton<SmallBallController>
 
     public void ResetSmallBalls()
     {
+
+        initalHolder.SetActive(true);
+
         foreach (var smallBall in smallBalls)
         {
-            smallBall.ResetPosition();
+            
+            smallBall.ResetSmallBall();
         }
     }
 

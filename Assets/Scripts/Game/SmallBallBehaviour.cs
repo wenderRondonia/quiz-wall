@@ -23,6 +23,12 @@ public class SmallBallBehaviour : MonoBehaviour
         sumAreaReached = sumArea;
     }
 
+    public void ResetSmallBall()
+    {
+        sumAreaReached = null;
+        gameObject.SetActive(false);
+        ResetPosition();
+    }
 
     public void OnCollisionEnter2D(Collision2D collision2D)
     {
