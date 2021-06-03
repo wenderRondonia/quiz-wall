@@ -30,6 +30,13 @@ public class QuestionData
 public class QuestionReader
 {
     public static List<QuestionData> questions = new List<QuestionData>();
+
+
+    public static QuestionData GetQuestionRandom()
+    {
+        return questions.SelectRandom();
+    }
+
     public static void ReadQuestions()
     {
         var questionsAsset = Resources.Load<TextAsset>("Questions");

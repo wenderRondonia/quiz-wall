@@ -7,13 +7,17 @@ public class BallController : Singleton<BallController>
 {
     public Transform SpotsParent;
     public Transform BallsParent;
+
+    public Transform FinalSpot;
+
+    [Space(20)]
     public AudioSource[] BallTicks;
     public AudioSource BallReload;
     public AudioSource SoundBallUp;
     public AudioSource SoundBallDown;
     public AudioSource SoundPipe;
     public Image Ball;
-    int finalSpot = 8;
+    int GetFinalSpotIndex { get { return FinalSpot.GetSiblingIndex(); } }
 
     Image GetBall(int ballIndex)
     {
@@ -44,8 +48,8 @@ public class BallController : Singleton<BallController>
     {
         if (spot >= SpotsParent.childCount)
         {
-            Debug.Log("GetSpot spot="+ spot);
-            return Vector3.zero;
+            //Debug.Log("GetSpot spot="+ spot);
+            return SpotsParent.GetChild(SpotsParent.childCount-1).position;
         }
         return SpotsParent.GetChild(spot).position;
     }
@@ -60,7 +64,7 @@ public class BallController : Singleton<BallController>
             newBall.gameObject.SetActive(true);
             newBall.transform.position = GetSpot(0);
 
-            AnimateBall(ball: i, spots: new[] { finalSpot - i });
+            AnimateBall(ball: i, spots: new[] { GetFinalSpotIndex - i });
             
             BallTicks[2].Play();
 
@@ -75,7 +79,7 @@ public class BallController : Singleton<BallController>
     {
         SoundBallDown.Play();
 
-        Debug.Log("AnimatingLastBallToExit");
+        //Debug.Log("AnimatingLastBallToExit");
 
         AnimateBall(ball: 0, spots: new[] { SpotsParent.childCount-3, SpotsParent.childCount - 2, SpotsParent.childCount - 1 }, oncomplete:image=> {
             Destroy(image.gameObject);
@@ -83,8 +87,8 @@ public class BallController : Singleton<BallController>
 
         for (int i=1; i < BallsParent.childCount;i++)
         {
-            Debug.Log("AnimatingLastBallToExit Ball i="+i+" spot="+ (finalSpot - i));
-            AnimateBall(ball: i, spots: new[] { finalSpot - i +1 });
+           //Debug.Log("AnimatingLastBallToExit Ball i="+i+" spot="+ (finalSpot - i));
+            AnimateBall(ball: i, spots: new[] { GetFinalSpotIndex - i +1 });
         }
 
         

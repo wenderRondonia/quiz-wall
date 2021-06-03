@@ -7,6 +7,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 {
     public Text textTitle;
     public Text textQuestion;
+    public Sprite spriteDefault;
     public Sprite spriteCorrect;
     public Sprite spriteIncorrect;
     public List<Button> buttonAnswers;
@@ -61,6 +62,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
         SoundManager.PlayClick();
         indexAnswered = index;
+        buttonAnswers[index].image.color = Color.gray;
         buttonAnswers[index].interactable = false;
         this.ExecuteIn(0.8f, () => { Hide(); });
 
@@ -78,6 +80,8 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         {
             var buttonAnswer = buttonAnswers[i];
             buttonAnswer.image.color = new Color(1,1,1,0.5f);
+            buttonAnswer.image.sprite = spriteDefault;
+            buttonAnswer.interactable = false;
             buttonAnswer.gameObject.SetActive(true);
             buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(false);
         }
@@ -98,6 +102,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         {
             var buttonAnswer = buttonAnswers[i];
             buttonAnswer.image.color = Color.white;
+            buttonAnswer.interactable = true;
             buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(true);
         }
     }
@@ -112,8 +117,9 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         {
             var buttonAnswer = buttonAnswers[i];
 
+            buttonAnswer.image.color = Color.white;
+
             int index = buttonAnswer.transform.GetSiblingIndex();
-                        
 
             if(index == indexAnswered || index == correctAnswerIndex)
             {

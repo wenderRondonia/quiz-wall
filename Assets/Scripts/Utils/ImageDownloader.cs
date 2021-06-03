@@ -44,9 +44,9 @@ public class ImageDownloader : SingletonPersistanceAuto<ImageDownloader>{
 
 
 
-        if (www.isNetworkError || www.isHttpError)
+        if (www.result == UnityWebRequest.Result.ConnectionError || www.result == UnityWebRequest.Result.ProtocolError)
         {
-            Debug.Log("GettingPic failed url=" + url);
+            Debug.Log("GettingPic failed url=" + url +" error="+www.error);
 
             // We got an Error or an Error Texture
             if (onfail!=null) onfail();        

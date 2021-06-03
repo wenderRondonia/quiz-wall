@@ -3,14 +3,50 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum SmallBallType
+{
+    White,
+    Red,
+    Green
+}
+
 public class SmallBallBehaviour : MonoBehaviour
 {
+    SmallBallType currentSmallType = SmallBallType.White;
+
+    Image image;
     GameObject lastPinHit;
     Vector3 originalPos;
-    SumArea sumAreaReached;
+    SumArea sumAreaReached;   
+
     void Awake()
     {
+        image = GetComponent<Image>();
+
         originalPos = transform.position;
+        gameObject.SetActive(false);
+    }
+
+    public SmallBallType GetSmallBallType()
+    {
+        return currentSmallType;
+    }
+
+    public void SetSmallBallType(SmallBallType smallBallType)
+    {
+        currentSmallType = smallBallType;
+
+        switch (currentSmallType)
+        {
+            case SmallBallType.White: image.color = Color.white; break;
+            case SmallBallType.Red: image.color = Color.red; break;
+            case SmallBallType.Green: image.color = Color.green; break;
+        }
+    }
+   
+    public SumArea GetSumArea()
+    {
+        return sumAreaReached;
     }
 
     public bool HasReachSumArea()
@@ -41,7 +77,6 @@ public class SmallBallBehaviour : MonoBehaviour
             SoundManager.PlaySmallBallSoundRandom();
 
             StartCoroutine(HighlighitingPin(lastPinHit.GetComponent<Image>()));
-
         }
     }
 

@@ -32,15 +32,9 @@ public class GameScreen : Singleton<GameScreen>
     {
         yield return RoundScreen.ShowingNewRound();
 
-        yield return BallController.instance.AnimatingInitalBalls(ballCount: 4);
+        yield return BallController.instance.AnimatingInitalBalls(ballCount: 8);
 
-        yield return BallController.instance.AnimatingLastBallToExit();
-
-        SmallBallController.instance.ActivateRandomSmallBall();
-
-        yield return BallController.instance.AnimatingLastBallToExit();
-
-        SmallBallController.instance.ActivateRandomSmallBall();
+        yield return UnlockingBalls(balls: 2);
 
         yield return DoingFirstQuestion();
 
@@ -49,6 +43,7 @@ public class GameScreen : Singleton<GameScreen>
         yield return DoingQuestionAnswer();
 
         SmallBallController.instance.ResetSmallBalls();
+        SumController.instance.ResetSum();
 
         // ################## end cycle ##################
 
@@ -58,20 +53,16 @@ public class GameScreen : Singleton<GameScreen>
 
         yield return new WaitForSeconds(1);
 
-
-        yield return BallController.instance.AnimatingLastBallToExit();
-
-        SmallBallController.instance.ActivateRandomSmallBall();
-
-        yield return BallController.instance.AnimatingLastBallToExit();
-
-        SmallBallController.instance.ActivateRandomSmallBall();
+        yield return UnlockingBalls(balls: 3);
 
         yield return DoingSecondQuestion();
 
         yield return SmallBallController.instance.DoingSmallBalls();
 
         yield return DoingQuestionAnswer();
+
+        SmallBallController.instance.ResetSmallBalls();
+        SumController.instance.ResetSum();
 
     }
 
@@ -80,7 +71,7 @@ public class GameScreen : Singleton<GameScreen>
 
         QuestionScreen.instance.ResetQuestion();
 
-        QuestionScreen.instance.SetupQuestion(1,2, QuestionReader.questions[0]);
+        QuestionScreen.instance.SetupQuestion(1,2, QuestionReader.GetQuestionRandom());
 
         QuestionScreen.instance.Show();
         QuestionScreen.instance.ShowAnswersPreview();
@@ -96,8 +87,6 @@ public class GameScreen : Singleton<GameScreen>
         yield return QuestionScreen.WaitingQuestionAnswer();
         
         yield return new WaitForSeconds(1);
-
-
 
     }
 
@@ -107,10 +96,11 @@ public class GameScreen : Singleton<GameScreen>
         QuestionScreen.instance.Show();
         QuestionScreen.instance.ShowCorrectAnswer();
 
-        yield return new WaitForSeconds(4);
+        //paying Money amount
+
+        yield return new WaitForSeconds(2);
 
         QuestionScreen.instance.Hide();
-
 
         yield return new WaitForSeconds(2);
 
@@ -118,12 +108,10 @@ public class GameScreen : Singleton<GameScreen>
 
     IEnumerator DoingSecondQuestion()
     {
-        yield return RoundScreen.ShowingNewRound();
-
 
         QuestionScreen.instance.ResetQuestion();
 
-        QuestionScreen.instance.SetupQuestion(1, 2, QuestionReader.questions[1]);
+        QuestionScreen.instance.SetupQuestion(2, 2, QuestionReader.GetQuestionRandom());
 
         QuestionScreen.instance.Show();
         QuestionScreen.instance.ShowAnswersPreview();
@@ -143,7 +131,24 @@ public class GameScreen : Singleton<GameScreen>
     }
 
 
+    IEnumerator UnlockingBalls(int balls)
+    {
 
+        //Debug.Log("UnlockingBalls balls="+balls);
+
+        for (int i = 0; i < balls; i++)
+        {
+            //Debug.Log("UnlockingBalls i=" + i);
+
+            yield return BallController.instance.AnimatingLastBallToExit();
+
+            SmallBallController.instance.ActivateRandomSmallBall();
+            
+            yield return new WaitForSeconds(0.5f);
+
+        }
+
+    }
 
     IEnumerator DoingPickZones()
     {

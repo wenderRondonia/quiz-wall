@@ -13,12 +13,6 @@ public class LoadScreenManager : SingletonPersistance<LoadScreenManager>
 	
 	public GameObject panel;
 
-	float deltaTime = 0.05f;
-	float fadingSpeed = 1.5f;
-	bool loadedScene;
-	float speedMenu = 0.6f;
-	float speed = 0.4f;
-	float speedAfterLoaded = 0.6f;
 
 	public void Show()
 	{
@@ -37,7 +31,6 @@ public class LoadScreenManager : SingletonPersistance<LoadScreenManager>
 
 	IEnumerator LoadingSceneScreen(string sceneName)
 	{
-		loadedScene = false;
 
 		//Debug.Log("LoadScreenManager.LoadingSceneScreen sceneName=" + sceneName);
 
@@ -60,7 +53,6 @@ public class LoadScreenManager : SingletonPersistance<LoadScreenManager>
 		Debug.Log("LoadScreenManager.LoadingSceneScreen finished loading loadingtime=" + delta.TotalSeconds + " sceneName=" + sceneName);
 #endif
 
-		loadedScene = true;
 
 		//Debug.Log("LoadScreenManager.LoadingSceneScreen Hide");
 

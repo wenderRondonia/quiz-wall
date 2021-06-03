@@ -7568,7 +7568,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &429539476
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8664,7 +8664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &518673262
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10643,7 +10643,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &609027319
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16075,7 +16075,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f707e79f6bd85ea46880913f09518997, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -18261,7 +18261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e63a8f68db95f24bb6927a1d9d71463, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  panel: {fileID: 0}
+  panel: {fileID: 1213676678}
   buttonMap: {fileID: 1869119322}
   buttonRestart: {fileID: 998387940}
 --- !u!1 &1006245748
@@ -22258,7 +22258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1286860736
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22767,6 +22767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpotsParent: {fileID: 1870191044}
   BallsParent: {fileID: 888622461}
+  FinalSpot: {fileID: 403951412}
   BallTicks:
   - {fileID: 183548248}
   - {fileID: 116352294}
@@ -29742,7 +29743,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 6c6b1105286691848a63b45dbc084d81, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -34121,7 +34122,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2002257260
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35419,6 +35420,7 @@ MonoBehaviour:
   panel: {fileID: 655622203}
   textTitle: {fileID: 87914036}
   textQuestion: {fileID: 1470908161}
+  spriteDefault: {fileID: 21300000, guid: 27e06bd6d789e7b49889b36ed79ed6df, type: 3}
   spriteCorrect: {fileID: 21300000, guid: 077d1a1eb1886dd409e1d621e429e938, type: 3}
   spriteIncorrect: {fileID: 21300000, guid: 990cb6c8a643e734b8defc139776f69a, type: 3}
   buttonAnswers:
@@ -36261,7 +36263,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2146159608
 RectTransform:
   m_ObjectHideFlags: 0

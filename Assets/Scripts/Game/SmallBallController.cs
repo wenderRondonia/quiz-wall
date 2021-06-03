@@ -8,7 +8,6 @@ public class SmallBallController : Singleton<SmallBallController>
 {
     public Transform smallBallParent;
     public GameObject initalHolder;
-
     public AudioSource soundRelease;
 
     List<SmallBallBehaviour> smallBalls = new List<SmallBallBehaviour>();
@@ -16,6 +15,7 @@ public class SmallBallController : Singleton<SmallBallController>
 
     void Start()
     {
+        
         smallBalls = smallBallParent.GetComponentsInChildren<SmallBallBehaviour>(true).ToList();
     }
 
@@ -84,6 +84,11 @@ public class SmallBallController : Singleton<SmallBallController>
         ReleaseHolder();
 
         yield return new WaitUntil(() => IsCompletedAllSmallBalls());
+
+        yield return new WaitForSeconds(2);
+
+
+
     }
 
 }

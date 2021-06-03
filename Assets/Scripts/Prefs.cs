@@ -66,6 +66,18 @@ public static class Prefs{
         PlayerPrefs.SetInt("LevelCompleted_" + level, completed);
     }
 
+    public static int GetMoney{get{ 
+        return PlayerPrefs.GetInt("Money");
+    }}
+
+    public static void SetMoney(float money)
+    {
+        PlayerPrefs.SetFloat("Money",money);
+    }
+    public static void AddMoney(float money)
+    {
+        SetMoney(GetMoney+money);
+    }
 
 
 

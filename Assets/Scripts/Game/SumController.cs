@@ -6,18 +6,43 @@ using UnityEngine.UI;
 public class SumController : Singleton<SumController>
 {
     public Transform SumsParent;
-    bool sumActived;
 
-    public bool IsSumActive()
+
+    public void ResetSum()
     {
-        return sumActived;
+        var smallBalls = SmallBallController.instance.GetActiveSmallBalls();
+                
+        for (int i = 0; i < smallBalls.Count; i++)
+        {
+            int amount = smallBalls[i].GetSumArea().GetSumAreaAmount();
+                      
+            if (smallBalls[i].GetSmallBallType() == SmallBallType.Green)
+            {
+                Prefs.AddMoney(amount);
+            }
+
+            if (smallBalls[i].GetSmallBallType() == SmallBallType.Red)
+            {
+                Prefs.AddMoney(-amount);
+            }
+
+            smallBalls[i].SetSmallBallType(SmallBallType.White);
+        }
+        
+        SetActiveAll(active:false);
+
     }
 
-
-    public void SetActiveAll(bool on)
+    public void SetActiveAll(bool active)
     {
         for (int i = 0; i < SumsParent.childCount; i++)
-            SetSumActive(i,on);
+            SetSumActive(i,active);
+    }
+
+    public bool GetSumActive(int index)
+    {
+        Image sumArea = SumController.instance.SumsParent.GetChild(index).GetComponent<Image>();
+        return sumArea.name.Contains("On");
     }
 
     public void SetSumActive(int index,bool on )
@@ -30,6 +55,5 @@ public class SumController : Singleton<SumController>
         texName += on ? "On" : "Off";
         sumArea.sprite = Resources.Load<Sprite>("Sums/" + texName);
 
-        sumActived = on;
     }
 }

@@ -5,6 +5,18 @@ using UnityEngine.UI;
 
 public class SumArea : MonoBehaviour
 {
+
+    public int GetSumAreaAmount()
+    {
+        Image sumArea = GetComponent<Image>();
+        string texName = sumArea.sprite.name;
+        texName = texName.Replace("Off", "");
+        texName = texName.Replace("On", "");
+        texName = texName.Replace("Sum", "");
+
+        return int.Parse(texName);
+    }
+
     public void OnTriggerEnter2D(Collider2D other)
     {
         //Debug.Log("OnTriggerEnter other="+other.name);
