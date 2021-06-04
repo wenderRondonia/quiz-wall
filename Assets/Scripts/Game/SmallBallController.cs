@@ -43,17 +43,22 @@ public class SmallBallController : Singleton<SmallBallController>
         return list;
     }
 
-    public void ActivateRandomSmallBall()
+    public void ActivateRandomSmallBall(SmallBallType smallBallType = SmallBallType.White)
     {
         int smallBallIndex = GetDisabledSmallBalls().SelectRandom();
 
-        StartSmallBall(smallBallIndex);
+        StartSmallBall(smallBallIndex,smallBallType);
     }
 
-    public void StartSmallBall(int index)
+    public void StartSmallBall(int index,SmallBallType smallBallType = SmallBallType.White)
     {
         smallBalls[index].gameObject.SetActive(true);
+        
+        smallBalls[index].SetSmallBallType(smallBallType);
+
     }
+
+  
 
     public void ReleaseHolder()
     {

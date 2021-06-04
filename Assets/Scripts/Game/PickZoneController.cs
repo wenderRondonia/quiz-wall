@@ -10,6 +10,10 @@ public class PickZoneController : MonoBehaviour
     public List<Button> buttons;
     public delegate void OnSelectPickZone(int index);
     public OnSelectPickZone onSelectPickZone;
+    
+    [Header("Runtime")]
+    public int zoneSelected;
+
 
     void Start()
     {
@@ -23,6 +27,7 @@ public class PickZoneController : MonoBehaviour
     public void Show()
     {
         panel.SetActive(true);
+        zoneSelected = -1;
     }
 
     public void Hide()
@@ -33,15 +38,14 @@ public class PickZoneController : MonoBehaviour
     void OnButtonPickZone(int index)
     {
         SoundManager.PlayClick();
-        if (onSelectPickZone != null)
-        {
-            onSelectPickZone(index);
-        }
-        else
-        {
-            Debug.Log("OnButtonPickBall failed delefate not defined!");
-        }
+        zoneSelected = index;
 
         Hide();
     }
+
+    public IEnumerator WaitingAnswer()
+    {
+        yield return new WaitUntil(() => zoneSelected != -1);
+    }
+
 }

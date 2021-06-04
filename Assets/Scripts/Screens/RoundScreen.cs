@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class RoundScreen : BaseScreen<RoundScreen>
 {
-  
+    public Text roundText;
     int duration = 2;
     public AudioSource soundRound;
     public override void Show()
@@ -25,8 +25,11 @@ public class RoundScreen : BaseScreen<RoundScreen>
         Hide();
     }
 
-    public static IEnumerator ShowingNewRound()
+    public static IEnumerator ShowingNewRound(int round)
     {
+
+        instance.roundText.text = "ROUND " + round;
+
         RoundScreen.instance.Show();
 
         yield return new WaitUntil(() => !RoundScreen.instance.IsShowing);

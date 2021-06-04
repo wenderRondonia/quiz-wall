@@ -16,10 +16,10 @@ public class BallController : Singleton<BallController>
     public AudioSource SoundBallUp;
     public AudioSource SoundBallDown;
     public AudioSource SoundPipe;
-    public Image Ball;
+    public BallBehaviour Ball;
     int GetFinalSpotIndex { get { return FinalSpot.GetSiblingIndex(); } }
 
-    Image GetBall(int ballIndex)
+    BallBehaviour GetBall(int ballIndex)
     {
 
         if (ballIndex >= BallsParent.childCount)
@@ -27,7 +27,7 @@ public class BallController : Singleton<BallController>
             Debug.Log("GetBall failed ballindex="+ballIndex);
             return null;
         }
-        return BallsParent.GetChild(ballIndex).GetComponent<Image>();
+        return BallsParent.GetChild(ballIndex).GetComponent<BallBehaviour>();
     }
 
     public bool IsBallsAnimating()
@@ -54,15 +54,18 @@ public class BallController : Singleton<BallController>
         return SpotsParent.GetChild(spot).position;
     }
 
-    public IEnumerator AnimatingInitalBalls(int ballCount)
+    public IEnumerator AnimatingInitalBalls(int ballCount, SmallBallType[] smallBallTypes=null)
     {
         float delayDuration = 0.4f;                
 
         for (int i=0;i < ballCount;i++) {
+
+            SmallBallType smallBallType = SmallBallType.White;
             
-            var newBall = GameObject.Instantiate(Ball,parent:BallsParent);
-            newBall.gameObject.SetActive(true);
-            newBall.transform.position = GetSpot(0);
+            if (smallBallTypes != null && i < smallBallTypes.Length)
+                smallBallType = smallBallTypes[i];
+
+            GenerateNewBall(smallBallType);
 
             AnimateBall(ball: i, spots: new[] { GetFinalSpotIndex - i });
             
@@ -75,7 +78,18 @@ public class BallController : Singleton<BallController>
 
     }
 
-    public IEnumerator AnimatingLastBallToExit()
+    public BallBehaviour GenerateNewBall(SmallBallType smallBallType)
+    {
+        var newBall = GameObject.Instantiate(Ball, parent: BallsParent);
+        newBall.gameObject.SetActive(true);
+        newBall.transform.position = GetSpot(0);
+        newBall.SetBallType(smallBallType);
+                
+        return newBall;
+
+    }
+
+    public IEnumerator AnimatingLastBallToExit(int[] pickZones=null)
     {
         SoundBallDown.Play();
 
@@ -87,28 +101,44 @@ public class BallController : Singleton<BallController>
 
         for (int i=1; i < BallsParent.childCount;i++)
         {
-           //Debug.Log("AnimatingLastBallToExit Ball i="+i+" spot="+ (finalSpot - i));
-            AnimateBall(ball: i, spots: new[] { GetFinalSpotIndex - i +1 });
-        }
+            //Debug.Log("AnimatingLastBallToExit Ball i="+i+" spot="+ (finalSpot - i));
 
+            var ball = GetBall(i);
+            
+            SmallBallType smallBallType = ball.smallBallType;
+
+            AnimateBall(ball: i, spots: new[] { GetFinalSpotIndex - i +1 });
+
+            if (pickZones == null)
+            {
+                SmallBallController.instance.ActivateRandomSmallBall(smallBallType);
+            }
+            else
+            {
+                int zonePicked = pickZones[i - 1];
+                SmallBallController.instance.StartSmallBall(zonePicked, smallBallType);
+            }
+
+        }
         
         yield return new WaitWhile(IsBallsAnimating);
+
 
     }
 
 
 
-    void AnimateBall(int ball, int[] spots, float duration = 0.6f, System.Action<Image> oncomplete = null)
+    void AnimateBall(int ball, int[] spots, float duration = 0.6f, System.Action<BallBehaviour> oncomplete = null)
     {
         StartCoroutine(AnimatingBall(ball, spots, duration,oncomplete));
     }
 
-    IEnumerator AnimatingBall(int ball,int[] spots,float duration = 0.6f,System.Action<Image> oncomplete=null)
+    IEnumerator AnimatingBall(int ball,int[] spots,float duration = 0.6f,System.Action<BallBehaviour> oncomplete=null)
     {
 
         SoundPipe.Play();
 
-        Image imageBall = GetBall(ball);
+        BallBehaviour imageBall = GetBall(ball);
 
         if (imageBall == null)
         {
@@ -157,6 +187,26 @@ public class BallController : Singleton<BallController>
         SoundBallUp.Play();
 
         if (oncomplete != null) oncomplete(imageBall);
+
+    }
+
+
+    public static IEnumerator UnlockingBalls(int balls,int[] pickZones=null)
+    {
+
+        //Debug.Log("UnlockingBalls balls="+balls);
+
+        for (int i = 0; i < balls; i++)
+        {
+            //Debug.Log("UnlockingBalls i=" + i);
+
+            yield return BallController.instance.AnimatingLastBallToExit(pickZones);
+
+           
+
+            yield return new WaitForSeconds(0.5f);
+
+        }
 
     }
 }

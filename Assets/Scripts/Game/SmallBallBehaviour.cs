@@ -83,6 +83,7 @@ public class SmallBallBehaviour : MonoBehaviour
     IEnumerator HighlighitingPin(Image image)
     {
         float transitionTime = 0.4f;
+        float waitTime = 0.2f;
 
         var clone = GameObject.Instantiate(image,image.transform.parent);
         clone.DestroyComponents<Collider2D>();
@@ -93,7 +94,7 @@ public class SmallBallBehaviour : MonoBehaviour
         yield return new WaitForSeconds(transitionTime);
 
 
-        yield return new WaitForSeconds(0.4f);
+        yield return new WaitForSeconds(waitTime);
 
 
         iTween.ScaleTo(clone.gameObject, Vector3.zero, transitionTime);

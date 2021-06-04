@@ -394,6 +394,7 @@ MonoBehaviour:
   - {fileID: 796412002}
   - {fileID: 1722164144}
   - {fileID: 2058773091}
+  zoneSelected: 0
 --- !u!1 &16761701
 GameObject:
   m_ObjectHideFlags: 0
@@ -7653,7 +7654,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -8749,7 +8750,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -10728,7 +10729,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -21758,7 +21759,8 @@ MonoBehaviour:
   - {fileID: 829508230}
   - {fileID: 1616829268}
   - {fileID: 2000465047}
-  useThreeZones: 0
+  zonesPicked: ffffffffffffffffffffffff
+  pickZoneType: 1
 --- !u!114 &1258746366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22343,7 +22345,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -22776,7 +22778,7 @@ MonoBehaviour:
   SoundBallUp: {fileID: 1826237311}
   SoundBallDown: {fileID: 733990209}
   SoundPipe: {fileID: 1706305160}
-  Ball: {fileID: 1500324051}
+  Ball: {fileID: 1500324053}
 --- !u!1 &1307086233
 GameObject:
   m_ObjectHideFlags: 0
@@ -24487,6 +24489,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panel: {fileID: 1758466686}
+  roundText: {fileID: 0}
   soundRound: {fileID: 1416819417}
 --- !u!114 &1416819413
 MonoBehaviour:
@@ -25719,6 +25722,7 @@ GameObject:
   - component: {fileID: 1500324050}
   - component: {fileID: 1500324052}
   - component: {fileID: 1500324051}
+  - component: {fileID: 1500324053}
   m_Layer: 5
   m_Name: Ball
   m_TagString: Untagged
@@ -25783,6 +25787,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500324049}
   m_CullTransparentMesh: 1
+--- !u!114 &1500324053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1500324049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7912562ba650b384d89b51918246b5cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smallBallType: 0
+  image: {fileID: 1500324051}
 --- !u!1 &1502456373
 GameObject:
   m_ObjectHideFlags: 0
@@ -34207,7 +34225,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -35428,6 +35446,8 @@ MonoBehaviour:
   - {fileID: 726272683}
   - {fileID: 64212040}
   - {fileID: 292197154}
+  pickBallMultiplier: {fileID: 1052405917}
+  pickZoneController: {fileID: 6626413}
   SoundRightAnswer: {fileID: 1740437996}
   SoundWrongAnswer: {fileID: 878972477}
 --- !u!114 &2096164678
@@ -36348,7 +36368,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 0.8
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1

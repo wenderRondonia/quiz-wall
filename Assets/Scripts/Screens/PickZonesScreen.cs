@@ -2,15 +2,25 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+
+public enum PickZoneType
+{
+    ThreeZones,
+    TwoZones
+}
 
 public class PickZonesScreen : BaseScreen<PickZonesScreen>
 {
     public Text textTitle;
     public List<Button> buttonsZones;
-    int indexAnswered1 = -1;
-    int indexAnswered2 = -1;
-    int indexAnswered3 = -1;
-    public bool useThreeZones;
+
+    [Header("Runtime")]
+
+    public int[] zonesPicked = new int[] { -1, -1,- 1 };
+
+    public PickZoneType pickZoneType = PickZoneType.TwoZones;
+
     void Start()
     {
         foreach (var buttonZone in buttonsZones)
@@ -20,16 +30,31 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
         }
     }
 
-    public static IEnumerator WaitingAnswer()
+    public int[] GetZonesPicked()
     {
-
-        if (instance.useThreeZones)
+        if (pickZoneType==PickZoneType.ThreeZones)
         {
-            yield return new WaitUntil(() => instance.indexAnswered1 != -1 && instance.indexAnswered2 != -1 && instance.indexAnswered3 != -1);
+            return zonesPicked;
         }
         else
         {
-            yield return new WaitUntil(() => instance.indexAnswered1 != -1 && instance.indexAnswered2 != -1);
+            var list = zonesPicked.ToList();
+            list.RemoveLast();
+            var array = list.ToArray();
+            return array;
+        }
+    }
+
+    public static IEnumerator WaitingAnswer()
+    {
+
+        if (instance.pickZoneType==PickZoneType.ThreeZones)
+        {
+            yield return new WaitUntil(() => instance.zonesPicked[0] != -1 && instance.zonesPicked[1] != -1 && instance.zonesPicked[2] != -1);
+        }
+        else
+        {
+            yield return new WaitUntil(() => instance.zonesPicked[0] != -1 && instance.zonesPicked[1] != -1);
         }
     }
 
@@ -37,41 +62,48 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
     {
         base.Show();
 
-        textTitle.text = "PICK "+(useThreeZones ? 3 : 2)+" ZONES";
+        textTitle.text = "PICK "+(pickZoneType == PickZoneType.ThreeZones ? 3 : 2)+" ZONES";
 
-        indexAnswered1 = -1;
-        indexAnswered2 = -1;
-        indexAnswered3 = -1;
+        zonesPicked[0] = -1;
+        zonesPicked[1] = -1;
+        zonesPicked[2] = -1;
 
     }
 
     void OnButtonAnswer(int index)
     {
         SoundManager.PlayClick();
-        if (indexAnswered1 == -1)
+        if (zonesPicked[0] == -1)
         {
-            indexAnswered1 = index;
-        }else if (indexAnswered2 == -1)
+            zonesPicked[0] = index;
+        }else if (zonesPicked[1] == -1)
         {
-            indexAnswered2 = index;
-            if(!useThreeZones)
+            zonesPicked[1] = index;
+            if(pickZoneType == PickZoneType.TwoZones)
                 this.ExecuteIn(0.5f, () => { Hide(); });
         }
-        else if(indexAnswered3 == -1)
+        else if(zonesPicked[2] == -1)
         {
-            indexAnswered3 = index;
+            zonesPicked[2] = index;
             this.ExecuteIn(0.5f, () => { Hide(); });
         }
-       
-
-        
+               
         buttonsZones[index].interactable = false;
-
-       
 
     }
 
-    
 
+    public IEnumerator DoingPickZones(PickZoneType pickZoneType)
+    {
+        PickZonesScreen.instance.pickZoneType = pickZoneType;
+
+        PickZonesScreen.instance.Show();
+
+        yield return PickZonesScreen.WaitingAnswer();
+
+        yield return new WaitForSeconds(1);
+
+
+    }
 
 }

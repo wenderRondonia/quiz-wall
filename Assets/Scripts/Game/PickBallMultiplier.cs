@@ -8,8 +8,8 @@ public class PickBallMultiplier : MonoBehaviour
 {
     public GameObject panel;
     public List<Button> buttons;
-    public delegate void OnSelectBallMultiplier(int index);
-    public OnSelectBallMultiplier onSelectBallMultiplier;
+    [Header("Runtime")]
+    public int indexAnswered = -1;
 
     void Start()
     {
@@ -23,6 +23,7 @@ public class PickBallMultiplier : MonoBehaviour
     public void Show()
     {
         panel.SetActive(true);
+        indexAnswered = -1;
     }
 
     public void Hide()
@@ -33,15 +34,14 @@ public class PickBallMultiplier : MonoBehaviour
     void OnButtonPickBall(int index)
     {
         SoundManager.PlayClick();
-        if (onSelectBallMultiplier != null)
-        {
-            onSelectBallMultiplier(index);
-        }
-        else
-        {
-            Debug.Log("OnButtonPickBall failed delefate not defined!");
-        }
+        indexAnswered = index;
+       
 
         Hide();
+    }
+
+    public IEnumerator WaitingAnswer()
+    {
+        yield return new WaitUntil(() => indexAnswered != -1);
     }
 }

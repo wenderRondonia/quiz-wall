@@ -12,6 +12,8 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     public Sprite spriteIncorrect;
     public List<Button> buttonAnswers;
 
+    public PickBallMultiplier pickBallMultiplier;
+    public PickZoneController pickZoneController;
     public AudioSource SoundRightAnswer;
     public AudioSource SoundWrongAnswer;
 
@@ -28,7 +30,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         }
     }
 
-    public static IEnumerator WaitingQuestionAnswer()
+    public static IEnumerator WaitingAnswer()
     {
         yield return new WaitUntil(() => instance.indexAnswered != -1);
     }
@@ -50,6 +52,16 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
             buttonAnswer.interactable = true;
         }
 
+    }
+
+    public void HideQuestionText()
+    {
+        textQuestion.enabled = true;
+    }
+
+    public void ShowQuestionText()
+    {
+        textQuestion.enabled = false;
     }
 
     void OnButtonAnswer(int index)
@@ -96,13 +108,13 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     }
 
 
-    public void ShowAnswers()
+    public void ShowAnswers(bool interactable=true)
     {
         for (int i = 0; i < currentQuestionData.AnswersShuffled.Count; i++)
         {
             var buttonAnswer = buttonAnswers[i];
             buttonAnswer.image.color = Color.white;
-            buttonAnswer.interactable = true;
+            buttonAnswer.interactable = interactable;
             buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(true);
         }
     }
@@ -169,7 +181,20 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         }
     }
 
+    public static IEnumerator DoingQuestionCheck()
+    {
+        QuestionScreen.instance.Show();
+        QuestionScreen.instance.ShowCorrectAnswer();
 
+        //paying Money amount
+
+        yield return new WaitForSeconds(2);
+
+        QuestionScreen.instance.Hide();
+
+        yield return new WaitForSeconds(1);
+
+    }
 }
 
 
