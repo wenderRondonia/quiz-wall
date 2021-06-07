@@ -2,6 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+public enum ContractAnswer
+{
+    NotAnswered,
+    Sign,
+    Continue
+}
 
 public class SignContractScreen : Singleton<SignContractScreen>
 {
@@ -9,6 +15,8 @@ public class SignContractScreen : Singleton<SignContractScreen>
     public GameObject panel;
     public Button buttonSign;
     public Button buttonPlay;
+    [Header("Runtime")]
+    public ContractAnswer answer = ContractAnswer.NotAnswered;
 
     void Start()
     {
@@ -21,7 +29,7 @@ public class SignContractScreen : Singleton<SignContractScreen>
         SoundManager.PlayClick();
         buttonSign.Focus();
 
-        //TODO
+        answer = ContractAnswer.Sign;
     }
 
     void OnButtonPlay()
@@ -29,13 +37,34 @@ public class SignContractScreen : Singleton<SignContractScreen>
 
         SoundManager.PlayClick();
         buttonPlay.Focus();
-        //TODO
+        
+        answer = ContractAnswer.Continue;
+
     }
 
 
     public void Show()
     {
+        answer = ContractAnswer.NotAnswered;
+
         FadePanel.FadeIn(panel);
+    }
+    
+    public void Hide()
+    {
+        
+        FadePanel.FadeOut(panel);
+    }
+
+    public IEnumerator WaitingAnswer()
+    {
+        Show();
+
+        yield return new WaitUntil(()=>answer!=ContractAnswer.NotAnswered);
+
+        Hide();
+
+
     }
 
 }

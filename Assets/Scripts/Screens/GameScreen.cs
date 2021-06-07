@@ -27,6 +27,9 @@ public class GameScreen : Singleton<GameScreen>
 
         yield return SecondRound.DoingSecondRound();
 
+        yield return ThirdRound.DoingThirdRound();
+           
+
     }    
 
 

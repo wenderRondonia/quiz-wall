@@ -191,7 +191,7 @@ public class BallController : Singleton<BallController>
     }
 
 
-    public static IEnumerator UnlockingBalls(int balls,int[] pickZones=null)
+    public static IEnumerator UnlockingBalls(int balls,int[] pickZones=null,SmallBallType[] ballTypes = null)
     {
 
         //Debug.Log("UnlockingBalls balls="+balls);
@@ -199,6 +199,10 @@ public class BallController : Singleton<BallController>
         for (int i = 0; i < balls; i++)
         {
             //Debug.Log("UnlockingBalls i=" + i);
+            if (ballTypes != null)
+            {
+                BallController.instance.GetBall(i).SetBallType(ballTypes[i]);
+            }
 
             yield return BallController.instance.AnimatingLastBallToExit(pickZones);
 

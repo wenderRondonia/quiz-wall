@@ -20,7 +20,20 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     QuestionData currentQuestionData;
     int currentQuestionNumber;
     int indexAnswered=-1;
-    
+
+    public bool IsAnsweredRight()
+    {
+        if (currentQuestionData == null)
+        {
+            Debug.Log("IsAnsweredRight failed");
+            return false;
+        }
+
+        return currentQuestionData.rightAnswer == indexAnswered;
+    }
+
+   
+
     void Start()
     {
         foreach (var buttonAnswer in buttonAnswers)
