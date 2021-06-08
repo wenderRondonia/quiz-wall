@@ -46,6 +46,8 @@ public class PickZoneController : MonoBehaviour
     public IEnumerator WaitingAnswer()
     {
         yield return new WaitUntil(() => zoneSelected != -1);
+
+
     }
 
 }

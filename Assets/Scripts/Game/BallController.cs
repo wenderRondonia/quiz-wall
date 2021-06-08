@@ -19,7 +19,7 @@ public class BallController : Singleton<BallController>
     public BallBehaviour Ball;
     int GetFinalSpotIndex { get { return FinalSpot.GetSiblingIndex(); } }
 
-    BallBehaviour GetBall(int ballIndex)
+    public BallBehaviour GetBall(int ballIndex)
     {
 
         if (ballIndex >= BallsParent.childCount)
@@ -88,6 +88,8 @@ public class BallController : Singleton<BallController>
         return newBall;
 
     }
+
+  
 
     public IEnumerator AnimatingLastBallToExit(int[] pickZones=null)
     {

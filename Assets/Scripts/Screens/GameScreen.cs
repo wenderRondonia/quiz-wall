@@ -25,12 +25,42 @@ public class GameScreen : Singleton<GameScreen>
 
         yield return FirstRound.DoingFirstRound();
 
+        yield return CheckingEndGame();
+
         yield return SecondRound.DoingSecondRound();
 
+        yield return CheckingEndGame();
+
+        ShowWin();
+
         yield return ThirdRound.DoingThirdRound();
-           
 
-    }    
+        ShowWin();
 
+    }   
+    
+
+    void ShowWin()
+    {
+
+        WonScreen.instance.textAmount.text = "+ R$ 9 430";
+
+        WonScreen.instance.Show();
+    }
+
+    IEnumerator CheckingEndGame()
+    {
+        bool hasLost = false;
+
+        if (hasLost)
+        {
+
+            LostScreen.instance.Show();
+
+            yield return new WaitUntil(() => true);
+        }
+
+        AdsManager.instance.ShowInterstitial();
+    }
 
 }
