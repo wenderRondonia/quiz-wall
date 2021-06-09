@@ -91,7 +91,7 @@ public class BallController : Singleton<BallController>
 
   
 
-    public IEnumerator AnimatingLastBallToExit(int[] pickZones=null)
+    public IEnumerator AnimatingLastBallToExit(int pickedZone=-1)
     {
         SoundBallDown.Play();
 
@@ -106,23 +106,23 @@ public class BallController : Singleton<BallController>
             //Debug.Log("AnimatingLastBallToExit Ball i="+i+" spot="+ (finalSpot - i));
 
             var ball = GetBall(i);
-            
-            SmallBallType smallBallType = ball.smallBallType;
 
             AnimateBall(ball: i, spots: new[] { GetFinalSpotIndex - i +1 });
 
-            if (pickZones == null)
-            {
-                SmallBallController.instance.ActivateRandomSmallBall(smallBallType);
-            }
-            else
-            {
-                int zonePicked = pickZones[i - 1];
-                SmallBallController.instance.StartSmallBall(zonePicked, smallBallType);
-            }
-
         }
-        
+
+        SmallBallType smallBallType = GetBall(0).smallBallType;
+
+        if (pickedZone == -1)
+        {
+            SmallBallController.instance.ActivateRandomSmallBall(smallBallType);
+        }
+        else
+        {
+           
+            SmallBallController.instance.StartSmallBall(pickedZone, smallBallType);
+        }
+
         yield return new WaitWhile(IsBallsAnimating);
 
 
@@ -193,7 +193,7 @@ public class BallController : Singleton<BallController>
     }
 
 
-    public static IEnumerator UnlockingBalls(int balls,int[] pickZones=null,SmallBallType[] ballTypes = null)
+    public static IEnumerator UnlockingBalls(int balls,int[] pickZones=null)
     {
 
         //Debug.Log("UnlockingBalls balls="+balls);
@@ -201,12 +201,14 @@ public class BallController : Singleton<BallController>
         for (int i = 0; i < balls; i++)
         {
             //Debug.Log("UnlockingBalls i=" + i);
-            if (ballTypes != null)
-            {
-                BallController.instance.GetBall(i).SetBallType(ballTypes[i]);
+            
+            int zonePicked = -1;
+            
+            if (pickZones!=null){
+                zonePicked = pickZones[i];
             }
 
-            yield return BallController.instance.AnimatingLastBallToExit(pickZones);
+            yield return BallController.instance.AnimatingLastBallToExit( pickedZone: zonePicked);
 
            
 

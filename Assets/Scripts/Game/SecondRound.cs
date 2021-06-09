@@ -37,7 +37,6 @@ public static class SecondRound
         yield return BallController.UnlockingBalls(balls: 2);
 
         SmallBallController.instance.ResetSmallBalls();
-        SumController.instance.ResetSum();
 
     }
 
@@ -76,7 +75,6 @@ public static class SecondRound
 
         SmallBallController.instance.ResetSmallBalls();
 
-        SumController.instance.ResetSum();
     }
 
 }

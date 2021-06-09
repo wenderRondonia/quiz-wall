@@ -15,6 +15,8 @@ public class SmallBallBehaviour : MonoBehaviour
     SmallBallType currentSmallType = SmallBallType.White;
 
     Image image;
+    TrailRenderer trailRenderer;
+
     GameObject lastPinHit;
     Vector3 originalPos;
     SumArea sumAreaReached;   
@@ -22,7 +24,7 @@ public class SmallBallBehaviour : MonoBehaviour
     void Awake()
     {
         image = GetComponent<Image>();
-
+        trailRenderer = GetComponent<TrailRenderer>();
         originalPos = transform.position;
         gameObject.SetActive(false);
     }
@@ -38,10 +40,13 @@ public class SmallBallBehaviour : MonoBehaviour
 
         switch (currentSmallType)
         {
-            case SmallBallType.White: image.color = Color.white; break;
+            case SmallBallType.White: image.color = Color.white;  break;
             case SmallBallType.Red: image.color = Color.red; break;
             case SmallBallType.Green: image.color = Color.green; break;
         }
+
+        trailRenderer.startColor = image.color;
+
     }
    
     public SumArea GetSumArea()
@@ -63,6 +68,7 @@ public class SmallBallBehaviour : MonoBehaviour
     {
         sumAreaReached = null;
         gameObject.SetActive(false);
+        SetSmallBallType(SmallBallType.White) ;
         ResetPosition();
     }
 

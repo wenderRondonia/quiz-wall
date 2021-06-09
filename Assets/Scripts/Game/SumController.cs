@@ -11,7 +11,9 @@ public class SumController : Singleton<SumController>
     public void ResetSum()
     {
         var smallBalls = SmallBallController.instance.GetActiveSmallBalls();
-                
+
+        float lastMoney = Prefs.GetMoney;
+
         for (int i = 0; i < smallBalls.Count; i++)
         {
             int amount = smallBalls[i].GetSumArea().GetSumAreaAmount();
@@ -19,16 +21,20 @@ public class SumController : Singleton<SumController>
             if (smallBalls[i].GetSmallBallType() == SmallBallType.Green)
             {
                 Prefs.AddMoney(amount);
-            }
-
-            if (smallBalls[i].GetSmallBallType() == SmallBallType.Red)
+                
+            }else if (smallBalls[i].GetSmallBallType() == SmallBallType.Red)
             {
                 Prefs.AddMoney(-amount);
+                
             }
-
-            smallBalls[i].SetSmallBallType(SmallBallType.White);
+            else
+            {
+                smallBalls[i].SetSmallBallType(SmallBallType.White);
+            }
+                        
         }
-        
+
+        GameScreen.instance.LerpMoneyTo(lastMoney, Prefs.GetMoney);
         SetActiveAll(active:false);
 
     }
@@ -43,6 +49,12 @@ public class SumController : Singleton<SumController>
     {
         Image sumArea = SumController.instance.SumsParent.GetChild(index).GetComponent<Image>();
         return sumArea.name.Contains("On");
+    }
+
+    public Image GetSumImage(int index)
+    {
+        Image sumArea = SumController.instance.SumsParent.GetChild(index).GetComponent<Image>();
+        return sumArea;
     }
 
     public void SetSumActive(int index,bool on )

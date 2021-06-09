@@ -9,6 +9,10 @@ public static class FormatterUtils{
     public static string formatCoins = "N0";
 	public static string ToStringNumber(this int input){ return input.ToString("N0").Replace(","," ");}
 	public static string ToStringNumber(this float input){ return ToStringNumber((int)input);}
+	public static string ToStringMoney(this float input) {
+	
+		return input.ToString("C"); 
+	}
 
 
 	public static string ToStringWithColor(this string input,string color){

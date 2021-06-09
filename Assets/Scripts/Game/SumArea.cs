@@ -8,8 +8,23 @@ public class SumArea : MonoBehaviour
 
     public int GetSumAreaAmount()
     {
-        Image sumArea = GetComponent<Image>();
-        string texName = sumArea.sprite.name;
+       
+        var sumAreaImage = SumController.instance.GetSumImage(transform.GetSiblingIndex());
+
+        if (sumAreaImage == null)
+        {
+            Debug.Log("GetSumAreaAmount failed not defined sum area name=" + name);
+            return 0;
+        }
+
+        if (sumAreaImage.sprite == null)
+        {
+            Debug.Log("GetSumAreaAmount failed not defined sprite name=" + name);
+            return 0;
+        }
+
+
+        string texName = sumAreaImage.sprite.name;
         texName = texName.Replace("Off", "");
         texName = texName.Replace("On", "");
         texName = texName.Replace("Sum", "");

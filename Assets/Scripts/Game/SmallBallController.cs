@@ -52,13 +52,15 @@ public class SmallBallController : Singleton<SmallBallController>
 
     public void StartSmallBall(int index,SmallBallType smallBallType = SmallBallType.White)
     {
-        smallBalls[index].gameObject.SetActive(true);
         
         smallBalls[index].SetSmallBallType(smallBallType);
 
+        smallBalls[index].gameObject.SetActive(true);
+
+        //Debug.Log("StartSmallBall index="+index+ " smallBallType="+ smallBallType);
     }
 
-  
+
 
     public void ReleaseHolder()
     {
@@ -74,14 +76,16 @@ public class SmallBallController : Singleton<SmallBallController>
 
     public void ResetSmallBalls()
     {
-
         initalHolder.SetActive(true);
+        
+        SumController.instance.ResetSum();
 
         foreach (var smallBall in smallBalls)
         {
             
             smallBall.ResetSmallBall();
         }
+
     }
 
     public IEnumerator DoingSmallBalls()
@@ -92,7 +96,7 @@ public class SmallBallController : Singleton<SmallBallController>
 
         yield return new WaitForSeconds(2);
 
-
+        Debug.Log("SmallBalls done");
 
     }
 

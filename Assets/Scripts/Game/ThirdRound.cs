@@ -133,8 +133,7 @@ public static class ThirdRound
         }
 
         yield return BallController.UnlockingBalls(
-            balls: 4,
-            ballTypes: ballTypes
+            balls: 4
         );
 
         yield return SmallBallController.instance.DoingSmallBalls();

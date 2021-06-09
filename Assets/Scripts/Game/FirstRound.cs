@@ -7,7 +7,11 @@ public static class FirstRound
 
     public static IEnumerator DoingFirstRound()
     {
-        for (int i=1; i < 2; i++)
+        yield return RoundScreen.ShowingNewRound(round: 1);
+
+        yield return BallController.instance.AnimatingInitalBalls(ballCount: 4);
+
+        for (int i=1; i <= 2; i++)
         {
             yield return DoingQuestionRound( question: i );
         }        
@@ -15,9 +19,6 @@ public static class FirstRound
 
     static IEnumerator DoingQuestionRound(int question)
     {
-        yield return RoundScreen.ShowingNewRound(round: 1);
-
-        yield return BallController.instance.AnimatingInitalBalls(ballCount: 4);
 
         yield return BallController.UnlockingBalls(balls: 2);
 
@@ -27,8 +28,10 @@ public static class FirstRound
 
         yield return QuestionScreen.DoingQuestionCheck();
 
+        bool answerRight = QuestionScreen.instance.IsAnsweredRight();
+        SmallBallController.instance.GetActiveSmallBalls().ForEach(b => b.SetSmallBallType(answerRight ? SmallBallType.Green : SmallBallType.Red)); ;
+
         SmallBallController.instance.ResetSmallBalls();
-        SumController.instance.ResetSum();
 
         yield return new WaitForSeconds(1);
     }

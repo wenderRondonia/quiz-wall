@@ -199,7 +199,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         QuestionScreen.instance.Show();
         QuestionScreen.instance.ShowCorrectAnswer();
 
-        //paying Money amount
+        
 
         yield return new WaitForSeconds(2);
 
