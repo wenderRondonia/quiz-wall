@@ -28,12 +28,12 @@ public static class FirstRound
 
         yield return QuestionScreen.DoingQuestionCheck();
 
-        bool answerRight = QuestionScreen.instance.IsAnsweredRight();
-        SmallBallController.instance.GetActiveSmallBalls().ForEach(b => b.SetSmallBallType(answerRight ? SmallBallType.Green : SmallBallType.Red)); ;
+        SmallBallController.instance.SetupCorrectAnswer();
 
         SmallBallController.instance.ResetSmallBalls();
 
         yield return new WaitForSeconds(1);
+
     }
 
     static IEnumerator DoingQuestion(int question)

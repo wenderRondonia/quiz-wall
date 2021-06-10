@@ -28,6 +28,8 @@ public static class SecondRound
 
         yield return SmallBallController.instance.DoingSmallBalls();
 
+        SmallBallController.instance.ResetSmallBalls();
+
         for (int i=1; i <= 3; i++)
         {
             yield return DoingQuestion(i);
@@ -35,7 +37,9 @@ public static class SecondRound
 
 
         yield return BallController.UnlockingBalls(balls: 2);
-
+        
+        yield return SmallBallController.instance.DoingSmallBalls();
+        
         SmallBallController.instance.ResetSmallBalls();
 
     }
@@ -51,6 +55,7 @@ public static class SecondRound
         QuestionScreen.instance.HideQuestionText();
 
         QuestionScreen.instance.pickZoneController.Show();
+        QuestionScreen.instance.Show();
 
         yield return QuestionScreen.instance.pickZoneController.WaitingAnswer();
 
@@ -69,7 +74,7 @@ public static class SecondRound
 
         yield return QuestionScreen.DoingQuestionCheck();
 
-        //TODO: check answer transform ball types
+        SmallBallController.instance.SetupCorrectAnswer();
 
         yield return SmallBallController.instance.DoingSmallBalls();
 

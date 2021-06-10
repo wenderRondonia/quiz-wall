@@ -63,18 +63,22 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         foreach (var buttonAnswer in buttonAnswers)
         {
             buttonAnswer.interactable = true;
+            buttonAnswer.image.color = Color.white;
+            buttonAnswer.image.sprite = spriteDefault;
+            buttonAnswer.gameObject.SetActive(true);
+            buttonAnswer.GetComponentInChildren<Text>(true).gameObject.SetActive(true);
         }
 
     }
 
     public void HideQuestionText()
     {
-        textQuestion.enabled = true;
+        textQuestion.enabled = false;
     }
 
     public void ShowQuestionText()
     {
-        textQuestion.enabled = false;
+        textQuestion.enabled = true;
     }
 
     void OnButtonAnswer(int index)

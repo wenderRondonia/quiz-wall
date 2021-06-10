@@ -79,6 +79,18 @@ public static class Prefs{
         SetMoney(GetMoney+money);
     }
 
+    public static float GeStoredtMoney{get{ 
+        return PlayerPrefs.GetFloat("StoredtMoney");
+    }}
 
+    public static void SetStoredMoney(float storedtMoney)
+    {
+        PlayerPrefs.SetFloat("StoredtMoney", storedtMoney);
+    }
+
+    public static void AddStoredMoney(float storedtMoney)
+    {
+        SetMoney(GeStoredtMoney + storedtMoney);
+    }
 
 }

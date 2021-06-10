@@ -31,22 +31,15 @@ public class GameScreen : Singleton<GameScreen>
 
         yield return CheckingEndGame();
 
-        ShowWin();
+        yield return WonScreen.instance.ShowingWin();
 
         yield return ThirdRound.DoingThirdRound();
 
-        ShowWin();
+        yield return CheckingEndGame();
 
-    }   
-    
+        yield return WonScreen.instance.ShowingWin();
 
-    void ShowWin()
-    {
-
-        WonScreen.instance.textAmount.text = "+ R$ 9 430";
-
-        WonScreen.instance.Show();
-    }
+    }      
 
     IEnumerator CheckingEndGame()
     {

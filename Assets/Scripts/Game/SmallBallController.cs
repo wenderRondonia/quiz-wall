@@ -96,7 +96,33 @@ public class SmallBallController : Singleton<SmallBallController>
 
         yield return new WaitForSeconds(2);
 
-        Debug.Log("SmallBalls done");
+        Debug.Log("DoingSmallBalls end");
+        
+
+    }
+
+    public void SetupCorrectAnswer()
+    {
+        SetCorrectAnswer(QuestionScreen.instance.IsAnsweredRight());
+    }
+
+    public void SetCorrectAnswer(bool answerRight)
+    {
+        SmallBallType smallBallType = answerRight ? SmallBallType.Green : SmallBallType.Red;
+        
+        foreach (var ball in GetActiveSmallBalls())
+        {
+            ball.SetSmallBallType(smallBallType);
+        }
+    }
+
+    public void SetCorrectAnswers(List<bool> answers)
+    {
+        SmallBallType[] ballTypes = new SmallBallType[answers.Count];
+        for (int i = 0; i < answers.Count; i++)
+        {
+            ballTypes[i] = answers[i] ? SmallBallType.Green : SmallBallType.Red;
+        }
 
     }
 

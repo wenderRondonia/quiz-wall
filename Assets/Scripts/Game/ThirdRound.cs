@@ -6,16 +6,27 @@ public static class ThirdRound
 {
     static List<bool> answers = new List<bool>();
 
+    public static IEnumerator DoingThirdRound()
+    {
+        yield return DoingFirstPart();
+
+        yield return DoingSecondPart();
+
+    }
+
 
     public static IEnumerator DoingFirstPart()
     {
         yield return RoundScreen.ShowingNewRound(round: 3);
 
-        for (int i=1; i <=3;i++) {
+        yield return BallController.instance.AnimatingInitalBalls(ballCount: 9);
 
-            yield return BallController.instance.AnimatingInitalBalls(ballCount: 3);
-            
-            yield return BallController.instance.AnimatingLastBallToExit();
+
+        for (int i=1; i <=3;i++) {
+                       
+            yield return BallController.UnlockingBalls(
+                balls: 3
+            );
 
             QuestionScreen.instance.ResetQuestion();
 
@@ -28,17 +39,11 @@ public static class ThirdRound
 
             yield return QuestionScreen.DoingQuestionCheck();
 
-            for (int b=0; b < 3;b++)
-            {
-                var ball = BallController.instance.GetBall(b);
-                SmallBallType smallBallType = QuestionScreen.instance.IsAnsweredRight() ? SmallBallType.Green : SmallBallType.Red;
-                
-                ball.SetBallType(smallBallType);
-
-            }
+            SmallBallController.instance.SetupCorrectAnswer();
 
             yield return SmallBallController.instance.DoingSmallBalls();
-
+           
+            SmallBallController.instance.ResetSmallBalls();
 
         }
     }
@@ -54,49 +59,115 @@ public static class ThirdRound
                 SmallBallType.White, SmallBallType.White, SmallBallType.White,
                 SmallBallType.Red, SmallBallType.Red, SmallBallType.Red
            }
-       );
+        );
 
+        yield return UnlockingFirstThreeGoodBalls();
+
+        yield return DoingQuestions();
+
+        yield return UnlockingLastThreeGoodBalls();
+
+        yield return DoingFinalPart();
+
+    }
+
+    static IEnumerator UnlockingFirstThreeGoodBalls()
+    {
         yield return PickZonesScreen.instance.DoingPickZones(PickZoneType.ThreeZones);
 
         yield return BallController.UnlockingBalls(
-            balls:3,
-            pickZones: PickZonesScreen.instance.GetZonesPicked() 
+            balls: 3,
+            pickZones: PickZonesScreen.instance.GetZonesPicked()
         );
 
         yield return SmallBallController.instance.DoingSmallBalls();
 
-
-
+        SmallBallController.instance.ResetSmallBalls();
     }
 
-    public static IEnumerator DoingThirdRound()
+    static IEnumerator DoingQuestions()
+    {
+        for (int i = 1; i <= 3; i++)
+        {
+            QuestionScreen.instance.ResetQuestion();
+            QuestionScreen.instance.SetupQuestion(i, 3, QuestionReader.GetQuestionRandom());
+
+            QuestionScreen.instance.Show();
+            QuestionScreen.instance.HideQuestionText();
+            QuestionScreen.instance.ShowAnswers(interactable: false);
+
+            QuestionScreen.instance.pickBallMultiplier.Show();
+            yield return QuestionScreen.instance.pickBallMultiplier.WaitingAnswer();
+
+            QuestionScreen.instance.pickZoneController.Show();
+            yield return QuestionScreen.instance.pickZoneController.WaitingAnswer();
+            
+            yield return BallController.UnlockingBalls(
+                balls: 1,
+                ballMultiplier: QuestionScreen.instance.pickBallMultiplier.indexAnswered+1,
+                pickZones: new[] { QuestionScreen.instance.pickZoneController.zoneSelected }
+            );
+
+            QuestionScreen.instance.ShowQuestionText();
+            QuestionScreen.instance.ShowAnswers(interactable: true);
+
+            yield return QuestionScreen.WaitingAnswer();
+
+            SmallBallController.instance.SetupCorrectAnswer();
+
+            yield return SmallBallController.instance.DoingSmallBalls();
+
+            SmallBallController.instance.ResetSmallBalls();
+
+        }
+    }
+
+    static IEnumerator UnlockingLastThreeGoodBalls()
     {
 
+        yield return BallController.UnlockingBalls(
+            balls: 3
+        );
+
+        yield return SmallBallController.instance.DoingSmallBalls();
+
+        SmallBallController.instance.ResetSmallBalls();
+    }
+
+    static IEnumerator DoingFinalPart()
+    {
         yield return RoundScreen.ShowingNewRound(round: 3);
 
-        for (int i = 1; i <= 3; i++)
+        yield return BallController.instance.AnimatingInitalBalls(
+            ballCount:4
+        );
+
+        for (int i = 1; i <= 4; i++)
         {
             yield return DoingQuestion(question: i);
         }
 
         yield return SignContractScreen.instance.WaitingAnswer();
 
-
         AnswersScreen.instance.correctAnswers = answers;
 
         yield return AnswersScreen.instance.ShowingCorrectAnswers();
 
 
-        if (SignContractScreen.instance.answer==ContractAnswer.Sign)
+        if (SignContractScreen.instance.answer == ContractAnswer.Sign)
         {
-            yield return SigningContract();
+           
         }
         else
         {
-            yield return ContinueGame();
+
+            SmallBallController.instance.SetCorrectAnswers(answers);
+
+            yield return SmallBallController.instance.DoingSmallBalls();
+
+            SmallBallController.instance.ResetSmallBalls();
 
         }
-
     }
 
     static IEnumerator DoingQuestion(int question)
@@ -117,28 +188,5 @@ public static class ThirdRound
 
     }
 
-    static IEnumerator SigningContract()
-    {
-        yield return 0;
-    }
 
-    static IEnumerator ContinueGame()
-    {
-       
-
-        SmallBallType[] ballTypes = new SmallBallType[answers.Count];
-        for (int i=0; i < answers.Count;i++)
-        {
-            ballTypes[i] = answers[i] ? SmallBallType.Green : SmallBallType.Red;
-        }
-
-        yield return BallController.UnlockingBalls(
-            balls: 4
-        );
-
-        yield return SmallBallController.instance.DoingSmallBalls();
-
-    }
-
-   
 }

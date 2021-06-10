@@ -91,7 +91,7 @@ public class BallController : Singleton<BallController>
 
   
 
-    public IEnumerator AnimatingLastBallToExit(int pickedZone=-1)
+    public IEnumerator AnimatingLastBallToExit(int pickedZone=-1,int ballMultiplier=1)
     {
         SoundBallDown.Play();
 
@@ -113,14 +113,18 @@ public class BallController : Singleton<BallController>
 
         SmallBallType smallBallType = GetBall(0).smallBallType;
 
-        if (pickedZone == -1)
-        {
-            SmallBallController.instance.ActivateRandomSmallBall(smallBallType);
-        }
-        else
-        {
-           
-            SmallBallController.instance.StartSmallBall(pickedZone, smallBallType);
+        int ballsStarted = 0;
+        while (ballsStarted < ballMultiplier) {
+            if (pickedZone == -1)
+            {
+                SmallBallController.instance.ActivateRandomSmallBall(smallBallType);
+            }
+            else
+            {
+
+                SmallBallController.instance.StartSmallBall(pickedZone, smallBallType);
+            }
+            ballsStarted++;
         }
 
         yield return new WaitWhile(IsBallsAnimating);
@@ -193,7 +197,7 @@ public class BallController : Singleton<BallController>
     }
 
 
-    public static IEnumerator UnlockingBalls(int balls,int[] pickZones=null)
+    public static IEnumerator UnlockingBalls(int balls,int[] pickZones=null,int ballMultiplier=1)
     {
 
         //Debug.Log("UnlockingBalls balls="+balls);
@@ -208,7 +212,7 @@ public class BallController : Singleton<BallController>
                 zonePicked = pickZones[i];
             }
 
-            yield return BallController.instance.AnimatingLastBallToExit( pickedZone: zonePicked);
+            yield return BallController.instance.AnimatingLastBallToExit( pickedZone: zonePicked, ballMultiplier: ballMultiplier);
 
            
 

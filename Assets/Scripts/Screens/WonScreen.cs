@@ -9,6 +9,7 @@ public class WonScreen : Singleton<WonScreen>
     [SerializeField] Button buttonMenu;
     [SerializeField] Button buttonNext;
     public Text textAmount;
+    bool clickedContinue;
 
     void Start()
     {
@@ -33,10 +34,27 @@ public class WonScreen : Singleton<WonScreen>
         SoundManager.PlayClick();
         buttonMenu.Focus();
 
-        LoadScreenManager.instance.LoadSceneScreen("Game");
-
+        //LoadScreenManager.instance.LoadSceneScreen("Game");
+        clickedContinue = true;
     }
 
+    public IEnumerator ShowingWin()
+    {
+        clickedContinue = false;
+
+        WonScreen.instance.textAmount.text = Prefs.GetMoney.ToStringMoney() ;
+        
+        Prefs.AddStoredMoney(Prefs.GetMoney);
+
+        Prefs.SetMoney(0);
+        
+        WonScreen.instance.Show();
+
+        yield return new WaitUntil(()=>clickedContinue);
+
+        WonScreen.instance.Hide();
+
+    }
 
     public void Show()
     {
