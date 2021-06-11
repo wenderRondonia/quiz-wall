@@ -18,15 +18,25 @@ public class SmallBallBehaviour : MonoBehaviour
     TrailRenderer trailRenderer;
 
     GameObject lastPinHit;
-    Vector3 originalPos;
-    SumArea sumAreaReached;   
+    SumArea sumAreaReached;
+
+    int initialSpot;
 
     void Awake()
     {
         image = GetComponent<Image>();
         trailRenderer = GetComponent<TrailRenderer>();
-        originalPos = transform.position;
-        gameObject.SetActive(false);
+        
+    }
+
+    public void SetInitialSpot(int spot)
+    {
+        initialSpot = spot;
+    }
+
+    public int GetInitialSpot()
+    {
+        return initialSpot;
     }
 
     public SmallBallType GetSmallBallType()
@@ -64,13 +74,6 @@ public class SmallBallBehaviour : MonoBehaviour
         sumAreaReached = sumArea;
     }
 
-    public void ResetSmallBall()
-    {
-        sumAreaReached = null;
-        gameObject.SetActive(false);
-        SetSmallBallType(SmallBallType.White) ;
-        ResetPosition();
-    }
 
     public void OnCollisionEnter2D(Collision2D collision2D)
     {
@@ -83,6 +86,27 @@ public class SmallBallBehaviour : MonoBehaviour
             SoundManager.PlaySmallBallSoundRandom();
 
             StartCoroutine(HighlighitingPin(lastPinHit.GetComponent<Image>()));
+        }
+        if (!collision2D.gameObject.name.Contains("SmallBall") && collision2D.gameObject != lastPinHit)
+        {
+            float velocityAmount = 0.8f;
+            var myRigidbody2D = GetComponent<Rigidbody2D>();
+            var vel = myRigidbody2D.velocity;
+            
+            if (vel.y < 0)
+            {
+                if (vel.x > 0)
+                {
+                    vel.x += velocityAmount;
+                }
+                else if (vel.x < 0)
+                {
+                    vel.x -= velocityAmount;
+                }
+            }
+
+            myRigidbody2D.velocity = vel;
+
         }
     }
 
@@ -110,26 +134,5 @@ public class SmallBallBehaviour : MonoBehaviour
 
     }
 
-    public void ResetPosition()
-    {
-        transform.position = originalPos;
-    }
-    
-
-
-#if UNITY_EDITOR
-
-    [UnityEditor.MenuItem("Tools/SmallBallBehaviour/Reset Postiions")]
-    public static void ResetPositions()
-    {
-        var smallBalls = GameObject.Find("GameScreen/Wall/SmallBallController/SmallBalls").GetComponentsInChildren<SmallBallBehaviour>();
-        foreach (var smallBall in smallBalls)
-        {
-            smallBall.ResetPosition();
-
-        }
-    }
-
-#endif
 
 }

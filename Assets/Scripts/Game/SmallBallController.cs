@@ -6,56 +6,49 @@ using System.Linq;
 
 public class SmallBallController : Singleton<SmallBallController>
 {
+    public SmallBallBehaviour prefabSmallBall;
     public Transform smallBallParent;
+    public Transform spotsParent;
     public GameObject initalHolder;
     public AudioSource soundRelease;
 
-    List<SmallBallBehaviour> smallBalls = new List<SmallBallBehaviour>();
-
-
-    void Start()
-    {
-        
-        smallBalls = smallBallParent.GetComponentsInChildren<SmallBallBehaviour>(true).ToList();
-    }
-
     public List<SmallBallBehaviour> GetActiveSmallBalls()
     {
-        List<SmallBallBehaviour> list = new List<SmallBallBehaviour>();
-        smallBalls.ForEach(s => {
-            if (s.isActiveAndEnabled)
-                list.Add(s);
-
-        });
-
-        return list;
+        return smallBallParent.GetComponentsInChildren<SmallBallBehaviour>().ToList();
     }
 
-    public List<int> GetDisabledSmallBalls()
+    public List<int> GetAvailableSpots()
     {
-        List<int> list = new List<int>();
-        smallBalls.ForEach(s=> {
-            if (!s.isActiveAndEnabled)
-                list.Add(s.transform.GetSiblingIndex());
+        var spots = Enumerable.Range(0, spotsParent.childCount).ToList();
+        var balls = GetActiveSmallBalls();
+        foreach (var ball in balls)
+        {
+            
+            spots.Remove(ball.GetInitialSpot());
+        }
 
-        });
-
-        return list;
+        return spots;
     }
-
+   
     public void ActivateRandomSmallBall(SmallBallType smallBallType = SmallBallType.White)
     {
-        int smallBallIndex = GetDisabledSmallBalls().SelectRandom();
+
+        int smallBallIndex = GetAvailableSpots().SelectRandom();
 
         StartSmallBall(smallBallIndex,smallBallType);
+
     }
 
     public void StartSmallBall(int index,SmallBallType smallBallType = SmallBallType.White)
     {
-        
-        smallBalls[index].SetSmallBallType(smallBallType);
 
-        smallBalls[index].gameObject.SetActive(true);
+        Vector3 spotPos = spotsParent.GetChild(index).position;
+        var newSmallBall = GameObject.Instantiate(prefabSmallBall, spotPos,Quaternion.identity,smallBallParent);
+
+        newSmallBall.transform.localScale = Vector3.one;
+        newSmallBall.gameObject.SetActive(true);
+        newSmallBall.SetInitialSpot(index);
+        newSmallBall.SetSmallBallType(smallBallType);
 
         //Debug.Log("StartSmallBall index="+index+ " smallBallType="+ smallBallType);
     }
@@ -80,11 +73,7 @@ public class SmallBallController : Singleton<SmallBallController>
         
         SumController.instance.ResetSum();
 
-        foreach (var smallBall in smallBalls)
-        {
-            
-            smallBall.ResetSmallBall();
-        }
+        smallBallParent.DestroyChildren();
 
     }
 
@@ -119,9 +108,19 @@ public class SmallBallController : Singleton<SmallBallController>
     public void SetCorrectAnswers(List<bool> answers)
     {
         SmallBallType[] ballTypes = new SmallBallType[answers.Count];
+        
+        var balls = GetActiveSmallBalls();
+
         for (int i = 0; i < answers.Count; i++)
         {
             ballTypes[i] = answers[i] ? SmallBallType.Green : SmallBallType.Red;
+           
+        }
+
+        foreach (var ball in balls)
+        {
+            int ballIndex = ball.transform.GetSiblingIndex();
+            ball.SetSmallBallType(ballTypes[ballIndex]);
         }
 
     }

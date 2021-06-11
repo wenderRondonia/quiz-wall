@@ -8,9 +8,12 @@ public static class ThirdRound
 
     public static IEnumerator DoingThirdRound()
     {
+
         yield return DoingFirstPart();
 
         yield return DoingSecondPart();
+
+        yield return DoingFinalPart();
 
     }
 
@@ -67,7 +70,7 @@ public static class ThirdRound
 
         yield return UnlockingLastThreeGoodBalls();
 
-        yield return DoingFinalPart();
+        
 
     }
 
@@ -112,6 +115,8 @@ public static class ThirdRound
             QuestionScreen.instance.ShowAnswers(interactable: true);
 
             yield return QuestionScreen.WaitingAnswer();
+
+            yield return QuestionScreen.DoingQuestionCheck();
 
             SmallBallController.instance.SetupCorrectAnswer();
 

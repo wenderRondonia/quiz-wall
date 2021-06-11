@@ -95,7 +95,7 @@ public class BallController : Singleton<BallController>
     {
         SoundBallDown.Play();
 
-        //Debug.Log("AnimatingLastBallToExit");
+        Debug.Log("AnimatingLastBallToExit pickedZone="+ pickedZone+" ballMultiplier="+ ballMultiplier);
 
         AnimateBall(ball: 0, spots: new[] { SpotsParent.childCount-3, SpotsParent.childCount - 2, SpotsParent.childCount - 1 }, oncomplete:image=> {
             Destroy(image.gameObject);
@@ -212,7 +212,10 @@ public class BallController : Singleton<BallController>
                 zonePicked = pickZones[i];
             }
 
-            yield return BallController.instance.AnimatingLastBallToExit( pickedZone: zonePicked, ballMultiplier: ballMultiplier);
+            yield return BallController.instance.AnimatingLastBallToExit( 
+                pickedZone: zonePicked, 
+                ballMultiplier: ballMultiplier
+            );
 
            
 

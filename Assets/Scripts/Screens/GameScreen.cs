@@ -23,15 +23,15 @@ public class GameScreen : Singleton<GameScreen>
     IEnumerator MainGameLoop()
     {
 
-        yield return FirstRound.DoingFirstRound();
-
-        yield return CheckingEndGame();
-
-        yield return SecondRound.DoingSecondRound();
-
-        yield return CheckingEndGame();
-
-        yield return WonScreen.instance.ShowingWin();
+        //yield return FirstRound.DoingFirstRound();
+        //
+        //yield return CheckingEndGame();
+        //
+        //yield return SecondRound.DoingSecondRound();
+        //
+        //yield return CheckingEndGame();
+        //
+        //yield return WonScreen.instance.ShowingWin();
 
         yield return ThirdRound.DoingThirdRound();
 

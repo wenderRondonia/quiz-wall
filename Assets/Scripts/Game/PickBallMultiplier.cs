@@ -37,11 +37,13 @@ public class PickBallMultiplier : MonoBehaviour
         indexAnswered = index;
        
 
-        Hide();
     }
 
     public IEnumerator WaitingAnswer()
     {
         yield return new WaitUntil(() => indexAnswered != -1);
+
+        Hide();
+
     }
 }
