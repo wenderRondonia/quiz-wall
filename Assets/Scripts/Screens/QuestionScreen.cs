@@ -16,7 +16,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     public PickZoneController pickZoneController;
     public AudioSource SoundRightAnswer;
     public AudioSource SoundWrongAnswer;
-
+    public AudioSource SoundAnswered;
     QuestionData currentQuestionData;
     int currentQuestionNumber;
     int indexAnswered=-1;
@@ -59,6 +59,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     {
         indexAnswered = -1;
         currentQuestionData = null;
+        
 
         foreach (var buttonAnswer in buttonAnswers)
         {
@@ -89,7 +90,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
             return;
         }
 
-        SoundManager.PlayClick();
+        SoundAnswered.Play();
         indexAnswered = index;
         buttonAnswers[index].image.color = Color.gray;
         buttonAnswers[index].interactable = false;

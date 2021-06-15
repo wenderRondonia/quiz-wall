@@ -9,9 +9,9 @@ public static class ThirdRound
     public static IEnumerator DoingThirdRound()
     {
 
-        yield return DoingFirstPart();
+        //yield return DoingFirstPart();
 
-        yield return DoingSecondPart();
+        //yield return DoingSecondPart();
 
         yield return DoingFinalPart();
 
@@ -147,6 +147,8 @@ public static class ThirdRound
             ballCount:4
         );
 
+        yield return BallController.UnlockingBalls(balls: 4);
+
         for (int i = 1; i <= 4; i++)
         {
             yield return DoingQuestion(question: i);
@@ -158,14 +160,26 @@ public static class ThirdRound
 
         yield return AnswersScreen.instance.ShowingCorrectAnswers();
 
+        
 
         if (SignContractScreen.instance.answer == ContractAnswer.Sign)
         {
-           
+            float contractMoney = FirstRound.MoneyGainedAtFirstRound;
+
+            foreach (var answeredCorrect in answers)
+            {
+                if (answeredCorrect)
+                {
+                    contractMoney += 3000;
+                }
+            }
+
+            Prefs.SetMoney(contractMoney);
+
         }
         else
         {
-
+          
             SmallBallController.instance.SetCorrectAnswers(answers);
 
             yield return SmallBallController.instance.DoingSmallBalls();
@@ -177,6 +191,7 @@ public static class ThirdRound
 
     static IEnumerator DoingQuestion(int question)
     {
+        //Debug.Log("DoingQuestion=" + question);
 
         QuestionScreen.instance.ResetQuestion();
 
@@ -189,7 +204,9 @@ public static class ThirdRound
         
         answers.Add(QuestionScreen.instance.IsAnsweredRight());
 
+        yield return new WaitForSeconds(1.5f);
 
+        //Debug.Log("DoingQuestion=" + question+" End");
 
     }
 

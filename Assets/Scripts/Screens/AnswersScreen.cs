@@ -11,14 +11,23 @@ public class AnswersScreen : Singleton<AnswersScreen>
     public Sprite spriteCorrect;
     public Sprite spriteIncorrect;
     
+    public Button continueButton;
+
     [Header("Runtime")]
     
     public List<bool> correctAnswers;
 
+    bool clickedContinue;
 
     void Start()
     {
+        continueButton.onClick.AddListener(OnClickContinue);
+    }
 
+    void OnClickContinue()
+    {
+        SoundManager.PlayClick();
+        clickedContinue = true;
     }
 
     public void Hide()
@@ -28,6 +37,7 @@ public class AnswersScreen : Singleton<AnswersScreen>
     }
     public void Show()
     {
+        clickedContinue = false;
         FadePanel.FadeIn(panel);
     }
 
@@ -43,13 +53,14 @@ public class AnswersScreen : Singleton<AnswersScreen>
             bool isCorrect = correctAnswers[i];
             
             buttons[i].image.sprite = isCorrect ? spriteCorrect : spriteIncorrect ;
+
             
 
             yield return new WaitForSeconds(0.5f);
 
         }
 
-        yield return new WaitForSeconds(3);
+        yield return new WaitUntil(()=>clickedContinue);
 
         Hide();
 

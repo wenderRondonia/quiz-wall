@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class FirstRound
 {
+    public static float MoneyGainedAtFirstRound = 0;
 
     public static IEnumerator DoingFirstRound()
     {
@@ -14,7 +15,9 @@ public static class FirstRound
         for (int i=1; i <= 2; i++)
         {
             yield return DoingQuestionRound( question: i );
-        }        
+        }
+
+        MoneyGainedAtFirstRound = Prefs.GetMoney;
     }
 
     static IEnumerator DoingQuestionRound(int question)

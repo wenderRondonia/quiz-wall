@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class RoundStageScreen : BaseScreen<RoundStageScreen>
 {
-    //TODO: new screen smilar to round but with a title
     int duration = 2;
     public AudioSource soundRound;
     public override void Show()

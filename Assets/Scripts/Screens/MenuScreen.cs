@@ -28,8 +28,8 @@ public class MenuScreen : Singleton<MenuScreen>
 
     void OnEnable()
     {
-        //TODO
-        bankAmount.text = "R$ " + "999.999";
+        
+        bankAmount.text = Prefs.GeStoredtMoney.ToStringMoney();
     }
 
 

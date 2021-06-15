@@ -43,7 +43,9 @@ public class GameScreen : Singleton<GameScreen>
 
     IEnumerator CheckingEndGame()
     {
-        bool hasLost = false;
+        
+
+        bool hasLost = Prefs.GetMoney <= 0;
 
         if (hasLost)
         {
