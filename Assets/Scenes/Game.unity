@@ -7859,7 +7859,7 @@ GameObject:
   - component: {fileID: 432679410}
   - component: {fileID: 432679409}
   m_Layer: 5
-  m_Name: TextAnswer
+  m_Name: TextNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14085,7 +14085,7 @@ GameObject:
   - component: {fileID: 818730315}
   - component: {fileID: 818730314}
   m_Layer: 5
-  m_Name: TextAnswer
+  m_Name: TextNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17336,7 +17336,7 @@ GameObject:
   - component: {fileID: 980668307}
   - component: {fileID: 980668306}
   m_Layer: 5
-  m_Name: TextNumber
+  m_Name: TextAnswer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26007,7 +26007,7 @@ GameObject:
   - component: {fileID: 1505873400}
   - component: {fileID: 1505873399}
   m_Layer: 5
-  m_Name: TextAnswer
+  m_Name: TextNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26464,7 +26464,7 @@ GameObject:
   - component: {fileID: 1512276455}
   - component: {fileID: 1512276454}
   m_Layer: 5
-  m_Name: TextAnswer
+  m_Name: TextNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31015,7 +31015,7 @@ GameObject:
   - component: {fileID: 1775419753}
   - component: {fileID: 1775419752}
   m_Layer: 5
-  m_Name: TextNumber
+  m_Name: TextAnswer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33652,7 +33652,7 @@ GameObject:
   - component: {fileID: 1957263957}
   - component: {fileID: 1957263956}
   m_Layer: 5
-  m_Name: TextNumber
+  m_Name: TextAnswer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35934,6 +35934,15 @@ MonoBehaviour:
   SoundRightAnswer: {fileID: 1740437996}
   SoundWrongAnswer: {fileID: 878972477}
   SoundAnswered: {fileID: 165429001}
+  currentQuestionData:
+    question: 
+    answers: []
+    rightAnswer: 0
+    level: 0
+    category: 
+  currentQuestionNumber: 0
+  indexAnswered: -1
+  questionHistory: []
 --- !u!114 &2096164678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36350,7 +36359,7 @@ GameObject:
   - component: {fileID: 2128480719}
   - component: {fileID: 2128480718}
   m_Layer: 5
-  m_Name: TextNumber
+  m_Name: TextAnswer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

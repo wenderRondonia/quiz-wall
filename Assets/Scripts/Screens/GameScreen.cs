@@ -17,27 +17,32 @@ public class GameScreen : Singleton<GameScreen>
 
         StartCoroutine(MainGameLoop());
 
+        Prefs.SetMoney(0);
+
         moneyAmount.text = Prefs.GetMoney.ToStringMoney();
+
     }
 
     IEnumerator MainGameLoop()
     {
 
-        //yield return FirstRound.DoingFirstRound();
-        //
-        //yield return CheckingEndGame();
-        //
-        //yield return SecondRound.DoingSecondRound();
-        //
-        //yield return CheckingEndGame();
-        //
-        //yield return WonScreen.instance.ShowingWin();
+        yield return FirstRound.DoingFirstRound();
+        
+        yield return CheckingEndGame();
+        
+        yield return SecondRound.DoingSecondRound();
+        
+        yield return CheckingEndGame();
+        
+        yield return WonScreen.instance.ShowingWin();
 
         yield return ThirdRound.DoingThirdRound();
 
         yield return CheckingEndGame();
 
         yield return WonScreen.instance.ShowingWin();
+
+        LoadScreenManager.instance.LoadSceneScreen("Map");
 
     }      
 
@@ -52,7 +57,7 @@ public class GameScreen : Singleton<GameScreen>
 
             LostScreen.instance.Show();
 
-            yield return new WaitUntil(() => true);
+            yield return new WaitWhile(() => true);
         }
 
         AdsManager.instance.ShowInterstitial();

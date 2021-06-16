@@ -17,9 +17,13 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     public AudioSource SoundRightAnswer;
     public AudioSource SoundWrongAnswer;
     public AudioSource SoundAnswered;
-    QuestionData currentQuestionData;
-    int currentQuestionNumber;
-    int indexAnswered=-1;
+
+    [Header("Runtime")]
+    public QuestionData currentQuestionData;
+    public int currentQuestionNumber;
+    public int indexAnswered =-1;
+    
+    public List<QuestionData> questionHistory = new List<QuestionData>();
 
     public bool IsAnsweredRight()
     {
@@ -187,6 +191,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     public void SetupQuestion(int questionNumber,int questionCount, QuestionData questionData)
     {
         currentQuestionData = questionData;
+        questionHistory.Add(questionData);
         currentQuestionNumber = questionNumber;
 
         textTitle.text = "QUESTION " + questionNumber + "/" + questionCount;
@@ -202,9 +207,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     public static IEnumerator DoingQuestionCheck()
     {
         QuestionScreen.instance.Show();
-        QuestionScreen.instance.ShowCorrectAnswer();
-
-        
+        QuestionScreen.instance.ShowCorrectAnswer();       
 
         yield return new WaitForSeconds(2);
 

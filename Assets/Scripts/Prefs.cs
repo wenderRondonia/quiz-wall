@@ -76,7 +76,9 @@ public static class Prefs{
     }
     public static void AddMoney(float money)
     {
-        SetMoney(GetMoney+money);
+        float newMoney = GetMoney + money;
+        newMoney = Mathf.Clamp(newMoney,0,int.MaxValue);
+        SetMoney(newMoney);
     }
 
     public static float GeStoredtMoney{get{ 

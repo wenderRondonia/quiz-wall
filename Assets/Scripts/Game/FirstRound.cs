@@ -27,11 +27,13 @@ public static class FirstRound
 
         yield return DoingQuestion(question: 1);
 
-        yield return SmallBallController.instance.DoingSmallBalls();
-
+        SmallBallController.instance.SetupCorrectAnswer();
+        
         yield return QuestionScreen.DoingQuestionCheck();
 
         SmallBallController.instance.SetupCorrectAnswer();
+
+        yield return SmallBallController.instance.DoingSmallBalls();       
 
         SmallBallController.instance.ResetSmallBalls();
 

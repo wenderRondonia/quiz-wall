@@ -24,6 +24,8 @@ public class QuestionData
         }
         return sortedAnswers; 
     }}
+
+    public string GetRightAnswerText { get { return AnswersShuffled[rightAnswer]; } }
 }
 
 
@@ -31,10 +33,16 @@ public class QuestionReader
 {
     public static List<QuestionData> questions = new List<QuestionData>();
 
+    
 
     public static QuestionData GetQuestionRandom()
     {
-        return questions.SelectRandom();
+        QuestionData questionSelected = questions.SelectRandom();
+        
+        questions.Remove(questionSelected);
+        
+        return questionSelected;
+
     }
 
     public static void ReadQuestions()

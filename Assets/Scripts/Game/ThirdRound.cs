@@ -9,9 +9,9 @@ public static class ThirdRound
     public static IEnumerator DoingThirdRound()
     {
 
-        //yield return DoingFirstPart();
+        yield return DoingFirstPart();
 
-        //yield return DoingSecondPart();
+        yield return DoingSecondPart();
 
         yield return DoingFinalPart();
 
@@ -164,17 +164,8 @@ public static class ThirdRound
 
         if (SignContractScreen.instance.answer == ContractAnswer.Sign)
         {
-            float contractMoney = FirstRound.MoneyGainedAtFirstRound;
 
-            foreach (var answeredCorrect in answers)
-            {
-                if (answeredCorrect)
-                {
-                    contractMoney += 3000;
-                }
-            }
-
-            Prefs.SetMoney(contractMoney);
+            DoSignContract();
 
         }
         else
@@ -187,6 +178,26 @@ public static class ThirdRound
             SmallBallController.instance.ResetSmallBalls();
 
         }
+    }
+
+    static void DoSignContract()
+    {
+        float contractMoney = FirstRound.MoneyGainedAtFirstRound;
+        if (contractMoney == 0)
+        {
+            //testing
+            contractMoney = 1200;
+        }
+
+        foreach (var answeredCorrect in answers)
+        {
+            if (answeredCorrect)
+            {
+                contractMoney += 3000;
+            }
+        }
+
+        Prefs.SetMoney(contractMoney);
     }
 
     static IEnumerator DoingQuestion(int question)

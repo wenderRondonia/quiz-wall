@@ -38,7 +38,20 @@ public class AnswersScreen : Singleton<AnswersScreen>
     public void Show()
     {
         clickedContinue = false;
+        FillAnswers();
         FadePanel.FadeIn(panel);
+    }
+
+    void FillAnswers()
+    {
+        foreach (var button in buttons)
+        {
+            int index = buttons.IndexOf(button);
+            int lastIndex = QuestionScreen.instance.questionHistory.Count - 4 + index;
+            QuestionData lastQuestionData = QuestionScreen.instance.questionHistory[lastIndex];
+            button.GetComponentInChildByName<Text>("TextQuestion").text = lastQuestionData.question;
+            button.GetComponentInChildByName<Text>("TextAnswer").text = lastQuestionData.GetRightAnswerText;
+        }
     }
 
     public IEnumerator ShowingCorrectAnswers()
@@ -46,7 +59,7 @@ public class AnswersScreen : Singleton<AnswersScreen>
 
         Show();
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
         for (int i=0; i < 4; i++ )
         {
