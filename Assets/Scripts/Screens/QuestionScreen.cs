@@ -194,7 +194,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         questionHistory.Add(questionData);
         currentQuestionNumber = questionNumber;
 
-        textTitle.text = "QUESTION " + questionNumber + "/" + questionCount;
+        textTitle.text = "PERGUNTA"+" " + questionNumber + "/" + questionCount;
         textQuestion.text = questionData.question;
         for(int i=0; i < questionData.AnswersShuffled.Count; i++)
         {

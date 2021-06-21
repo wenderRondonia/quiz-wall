@@ -28,7 +28,7 @@ public class RoundScreen : BaseScreen<RoundScreen>
     public static IEnumerator ShowingNewRound(int round)
     {
 
-        instance.roundText.text = "ROUND " + round;
+        instance.roundText.text = "RODADA"+" " + round;
 
         RoundScreen.instance.Show();
 

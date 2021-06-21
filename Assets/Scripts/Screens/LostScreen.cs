@@ -31,7 +31,7 @@ public class LostScreen : Singleton<LostScreen>
     {
 
         SoundManager.PlayClick();
-        buttonMap.Focus();
+        buttonRestart.Focus();
 
         LoadScreenManager.instance.LoadSceneScreen("Game");
 

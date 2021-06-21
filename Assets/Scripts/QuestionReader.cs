@@ -81,14 +81,6 @@ public class QuestionReader
         
     }
 
-#if UNITY_EDITOR
-    
-    [UnityEditor.MenuItem("Tools/Test Questions")]
-    public static void Test()
-    {
-        
-
-    }
 
     static void ProcessValue(string storedValue, int row, int column)
     {
@@ -129,7 +121,6 @@ public class QuestionReader
 
     }
 
-#endif
 
 
 
@@ -172,5 +163,17 @@ public class QuestionReader
         System.Text.RegularExpressions.RegexOptions.ExplicitCapture)
                 select m.Groups[1].Value).ToArray();
     }
+
+
+#if UNITY_EDITOR
+
+    [UnityEditor.MenuItem("Tools/Test Questions")]
+    public static void Test()
+    {
+
+
+    }
+
+#endif
 
 }
