@@ -12,12 +12,16 @@ public enum PickZoneType
 
 public class PickZonesScreen : BaseScreen<PickZonesScreen>
 {
+    public GameObject timer;
+    public Text timerText;
     public Text textTitle;
     public List<Button> buttonsZones;
 
     [Header("Runtime")]
 
-    public int[] zonesPicked = new int[] { -1, -1,- 1 };
+    public int[] zonesPicked = new int[] { -1, -1, -1 };
+    public bool useTimer = true;
+    public bool timeIsUp = false;
 
     public PickZoneType pickZoneType = PickZoneType.TwoZones;
 
@@ -26,13 +30,13 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
         foreach (var buttonZone in buttonsZones)
         {
             int index = buttonZone.transform.GetSiblingIndex();
-            buttonZone.onClick.AddListener(()=>OnButtonAnswer(index));
+            buttonZone.onClick.AddListener(() => OnButtonAnswer(index));
         }
     }
 
     public int[] GetZonesPicked()
     {
-        if (pickZoneType==PickZoneType.ThreeZones)
+        if (pickZoneType == PickZoneType.ThreeZones)
         {
             return zonesPicked;
         }
@@ -48,7 +52,7 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
     public static IEnumerator WaitingAnswer()
     {
 
-        if (instance.pickZoneType==PickZoneType.ThreeZones)
+        if (instance.pickZoneType == PickZoneType.ThreeZones)
         {
             yield return new WaitUntil(() => instance.zonesPicked[0] != -1 && instance.zonesPicked[1] != -1 && instance.zonesPicked[2] != -1);
         }
@@ -62,11 +66,14 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
     {
         base.Show();
 
-        textTitle.text = "PICK "+(pickZoneType == PickZoneType.ThreeZones ? 3 : 2)+" ZONES";
+        textTitle.text = "PICK " + (pickZoneType == PickZoneType.ThreeZones ? 3 : 2) + " ZONES";
 
         zonesPicked[0] = -1;
         zonesPicked[1] = -1;
         zonesPicked[2] = -1;
+
+        if (useTimer)
+            InitTimer();
 
     }
 
@@ -76,18 +83,19 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
         if (zonesPicked[0] == -1)
         {
             zonesPicked[0] = index;
-        }else if (zonesPicked[1] == -1)
+        }
+        else if (zonesPicked[1] == -1)
         {
             zonesPicked[1] = index;
-            if(pickZoneType == PickZoneType.TwoZones)
+            if (pickZoneType == PickZoneType.TwoZones)
                 this.ExecuteIn(0.5f, () => { Hide(); });
         }
-        else if(zonesPicked[2] == -1)
+        else if (zonesPicked[2] == -1)
         {
             zonesPicked[2] = index;
             this.ExecuteIn(0.5f, () => { Hide(); });
         }
-               
+
         buttonsZones[index].interactable = false;
 
     }
@@ -106,4 +114,41 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
 
     }
 
+    void InitTimer()
+    {
+        timeIsUp = false;
+        timer.SetActive(true);
+        StartCoroutine(Timing());
+
+    }
+
+    IEnumerator Timing()
+    {
+
+        for (int i = 15; i >= 0; i--)
+        {
+            timerText.text = "00:" + i.ToString("00");
+            yield return new WaitForSeconds(1);
+        }
+
+        timeIsUp = true;
+
+        for (int i = 0; i < zonesPicked.Length; i++)
+        {
+            if (zonesPicked[i] == -1)
+            {
+                var zonesPickedList = zonesPicked.ToList();
+
+                var zonesAvailable = Enumerable.Range(0, 6).ToList();
+
+                zonesAvailable.RemoveAll(z => zonesPickedList.Contains(z));
+
+                zonesPicked[i] = zonesAvailable.SelectRandom();
+                //Debug.Log("TimesUp picking zone i=" + i + " zone=" + zonesPicked[i]);
+            }
+        }
+
+        Hide();
+
+    }
 }

@@ -12,7 +12,7 @@ public static class SecondRound
 
         yield return BallController.instance.AnimatingInitalBalls(
             ballCount: 7,
-            smallBallTypes: new[] { 
+            smallBallTypes: new[] {
                 SmallBallType.Green, SmallBallType.Green,
                 SmallBallType.White, SmallBallType.White, SmallBallType.White,
                 SmallBallType.Red, SmallBallType.Red
@@ -26,25 +26,25 @@ public static class SecondRound
             pickZones: PickZonesScreen.instance.GetZonesPicked()
         );
 
-        yield return SmallBallController.instance.DoingSmallBalls();
+        yield return SmallBallController.instance.UnlockAndWaitSmallBalls();
 
         SmallBallController.instance.ResetSmallBalls();
 
-        for (int i=1; i <= 3; i++)
+        for (int i = 1; i <= 3; i++)
         {
             yield return DoingQuestion(i);
         }
 
 
         yield return BallController.UnlockingBalls(balls: 2);
-        
-        yield return SmallBallController.instance.DoingSmallBalls();
-        
+
+        yield return SmallBallController.instance.UnlockAndWaitSmallBalls();
+
         SmallBallController.instance.ResetSmallBalls();
 
     }
 
-   
+
 
     static IEnumerator DoingQuestion(int question)
     {
@@ -63,9 +63,9 @@ public static class SecondRound
 
         yield return BallController.UnlockingBalls(
           balls: 1,
-          pickZones: new[] {zone}
+          pickZones: new[] { zone }
         );
-        
+
         QuestionScreen.instance.ShowQuestionText();
 
         QuestionScreen.instance.ShowAnswers(interactable: true);
@@ -76,7 +76,7 @@ public static class SecondRound
 
         SmallBallController.instance.SetupCorrectAnswer();
 
-        yield return SmallBallController.instance.DoingSmallBalls();
+        yield return SmallBallController.instance.UnlockAndWaitSmallBalls();
 
         SmallBallController.instance.ResetSmallBalls();
 

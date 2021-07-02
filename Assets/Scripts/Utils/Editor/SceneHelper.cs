@@ -12,22 +12,33 @@ using UnityEditor.SceneManagement;
 
 #endif
 
-public static class SceneHelper  {
+public static class SceneHelper
+{
 
 
-    #if UNITY_EDITOR
+#if UNITY_EDITOR
 
     [MenuItem("Tools/Scenes/Menu")]
-    public static void OpenMenu(){
-        
-        EditorSceneManager.OpenScene(EditorBuildSettings.scenes[0].path,OpenSceneMode.Single);
+    public static void OpenMenu()
+    {
+
+        EditorSceneManager.OpenScene(EditorBuildSettings.scenes[0].path, OpenSceneMode.Single);
     }
 
-     [MenuItem("Tools/Scenes/Game")]
-    public static void OpenGame(){
-        EditorSceneManager.OpenScene(EditorBuildSettings.scenes[1].path,OpenSceneMode.Single);
+
+    [MenuItem("Tools/Scenes/Map")]
+    public static void OpenMap()
+    {
+        EditorSceneManager.OpenScene(EditorBuildSettings.scenes[1].path, OpenSceneMode.Single);
     }
 
-    #endif
+    [MenuItem("Tools/Scenes/Game")]
+    public static void OpenGame()
+    {
+        EditorSceneManager.OpenScene(EditorBuildSettings.scenes[2].path, OpenSceneMode.Single);
+    }
+
+
+#endif
 
 }

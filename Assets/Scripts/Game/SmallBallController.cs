@@ -23,27 +23,27 @@ public class SmallBallController : Singleton<SmallBallController>
         var balls = GetActiveSmallBalls();
         foreach (var ball in balls)
         {
-            
+
             spots.Remove(ball.GetInitialSpot());
         }
 
         return spots;
     }
-   
+
     public void ActivateRandomSmallBall(SmallBallType smallBallType = SmallBallType.White)
     {
 
         int smallBallIndex = GetAvailableSpots().SelectRandom();
 
-        StartSmallBall(smallBallIndex,smallBallType);
+        StartSmallBall(smallBallIndex, smallBallType);
 
     }
 
-    public void StartSmallBall(int index,SmallBallType smallBallType = SmallBallType.White)
+    public void StartSmallBall(int index, SmallBallType smallBallType = SmallBallType.White)
     {
 
         Vector3 spotPos = spotsParent.GetChild(index).position;
-        var newSmallBall = GameObject.Instantiate(prefabSmallBall, spotPos,Quaternion.identity,smallBallParent);
+        var newSmallBall = GameObject.Instantiate(prefabSmallBall, spotPos, Quaternion.identity, smallBallParent);
 
         newSmallBall.transform.localScale = Vector3.one;
         newSmallBall.gameObject.SetActive(true);
@@ -62,31 +62,57 @@ public class SmallBallController : Singleton<SmallBallController>
 
     }
 
+    public bool IsCompletedAnySmallBalls()
+    {
+        return GetActiveSmallBalls().Any(s => s.HasReachSumArea());
+    }
+
+
     public bool IsCompletedAllSmallBalls()
     {
-        return GetActiveSmallBalls().TrueForAll(s=>s.HasReachSumArea()) ;
+        return GetActiveSmallBalls().TrueForAll(s => s.HasReachSumArea());
     }
 
     public void ResetSmallBalls()
     {
         initalHolder.SetActive(true);
-        
+
         SumController.instance.ResetSum();
 
         smallBallParent.DestroyChildren();
 
     }
 
-    public IEnumerator DoingSmallBalls()
+    public void UnlockSmallBalls()
     {
         ReleaseHolder();
+    }
+
+
+    public IEnumerator WaitingAnySmallBalls()
+    {
+
+        yield return new WaitUntil(() => IsCompletedAnySmallBalls());
+
+        yield return new WaitForSeconds(1);
+
+    }
+
+    public IEnumerator WaitingSmallBalls()
+    {
 
         yield return new WaitUntil(() => IsCompletedAllSmallBalls());
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
 
-        Debug.Log("DoingSmallBalls end");
-        
+    }
+
+    public IEnumerator UnlockAndWaitSmallBalls()
+    {
+        UnlockSmallBalls();
+
+        yield return WaitingSmallBalls();
+
 
     }
 
@@ -98,7 +124,7 @@ public class SmallBallController : Singleton<SmallBallController>
     public void SetCorrectAnswer(bool answerRight)
     {
         SmallBallType smallBallType = answerRight ? SmallBallType.Green : SmallBallType.Red;
-        
+
         foreach (var ball in GetActiveSmallBalls())
         {
             ball.SetSmallBallType(smallBallType);
@@ -108,13 +134,13 @@ public class SmallBallController : Singleton<SmallBallController>
     public void SetCorrectAnswers(List<bool> answers)
     {
         SmallBallType[] ballTypes = new SmallBallType[answers.Count];
-        
+
         var balls = GetActiveSmallBalls();
 
         for (int i = 0; i < answers.Count; i++)
         {
             ballTypes[i] = answers[i] ? SmallBallType.Green : SmallBallType.Red;
-           
+
         }
 
         foreach (var ball in balls)

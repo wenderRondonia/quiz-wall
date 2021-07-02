@@ -14,18 +14,28 @@ public class QuestionData
     public string category;
 
     List<string> sortedAnswers;
-    public List<string> AnswersShuffled { get {
-        if (sortedAnswers==null)
+    public List<string> AnswersShuffled
+    {
+        get
         {
-            string rightAnswerUsed = answers[rightAnswer];
-            sortedAnswers = new List<string>(answers);
-            sortedAnswers.Shuffle();
-            rightAnswer = sortedAnswers.FindIndex(a=>a==rightAnswerUsed);
+            if (sortedAnswers == null)
+            {
+                string rightAnswerUsed = answers[rightAnswer];
+                sortedAnswers = new List<string>(answers);
+                sortedAnswers.Shuffle();
+                rightAnswer = sortedAnswers.FindIndex(a => a == rightAnswerUsed);
+            }
+            return sortedAnswers;
         }
-        return sortedAnswers; 
-    }}
+    }
 
     public string GetRightAnswerText { get { return AnswersShuffled[rightAnswer]; } }
+
+
+    public override string ToString()
+    {
+        return JsonUtility.ToJson(this);
+    }
 }
 
 
@@ -33,14 +43,14 @@ public class QuestionReader
 {
     public static List<QuestionData> questions = new List<QuestionData>();
 
-    
+
 
     public static QuestionData GetQuestionRandom()
     {
         QuestionData questionSelected = questions.SelectRandom();
-        
+
         questions.Remove(questionSelected);
-        
+
         return questionSelected;
 
     }
@@ -78,14 +88,14 @@ public class QuestionReader
 
         //foreach (var question in questions)
         //    Debug.Log(questions.IndexOf(question) + " question=" + JsonUtility.ToJson(question, true));
-        
+
     }
 
 
     static void ProcessValue(string storedValue, int row, int column)
     {
-       
-        
+
+
         if (row >= questions.Count)
         {
             questions.Add(new QuestionData() { answers = new string[4] { "", "", "", "" } });
@@ -95,29 +105,32 @@ public class QuestionReader
         {
             case 0: questions[row].question = storedValue; break;
             case 1: questions[row].answers[0] = storedValue; break;
-            case 2: questions[row].answers[1] = storedValue;  break;
+            case 2: questions[row].answers[1] = storedValue; break;
             case 3: questions[row].answers[2] = storedValue; break;
             case 4:
                 questions[row].answers[3] = storedValue;
 
-                questions[row].rightAnswer = questions[row].AnswersShuffled.FindIndex(s=>s==storedValue); 
+                questions[row].rightAnswer = questions[row].AnswersShuffled.FindIndex(s => s == storedValue);
                 break;
             case 5:
                 int parsedValue = 0;
                 bool succeed = int.TryParse(storedValue, out parsedValue);
-                if (succeed) {
+                if (succeed)
+                {
                     questions[row].level = parsedValue;
-                }else{
+                }
+                else
+                {
                     Debug.Log("ProcessValue failed to parse column=" + column + " row=" + row + " storedValue=" + storedValue);
                 }
                 break;
             case 6: questions[row].category = storedValue; break;
             default:
-                Debug.Log("ProcessValue failed column not identified="+column+" row="+row+" storedValue="+storedValue);
+                Debug.Log("ProcessValue failed column not identified=" + column + " row=" + row + " storedValue=" + storedValue);
                 break;
 
         }
-        
+
 
     }
 

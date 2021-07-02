@@ -21,8 +21,8 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     [Header("Runtime")]
     public QuestionData currentQuestionData;
     public int currentQuestionNumber;
-    public int indexAnswered =-1;
-    
+    public int indexAnswered = -1;
+
     public List<QuestionData> questionHistory = new List<QuestionData>();
 
     public bool IsAnsweredRight()
@@ -36,15 +36,20 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         return currentQuestionData.rightAnswer == indexAnswered;
     }
 
-   
+
 
     void Start()
     {
         foreach (var buttonAnswer in buttonAnswers)
         {
             int index = buttonAnswer.transform.GetSiblingIndex();
-            buttonAnswer.onClick.AddListener(()=>OnButtonAnswer(index));
+            buttonAnswer.onClick.AddListener(() => OnButtonAnswer(index));
         }
+    }
+
+    public static bool IsAnswered()
+    {
+        return instance.indexAnswered != -1;
     }
 
     public static IEnumerator WaitingAnswer()
@@ -63,7 +68,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     {
         indexAnswered = -1;
         currentQuestionData = null;
-        
+
 
         foreach (var buttonAnswer in buttonAnswers)
         {
@@ -113,7 +118,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         for (int i = 0; i < currentQuestionData.AnswersShuffled.Count; i++)
         {
             var buttonAnswer = buttonAnswers[i];
-            buttonAnswer.image.color = new Color(1,1,1,0.5f);
+            buttonAnswer.image.color = new Color(1, 1, 1, 0.5f);
             buttonAnswer.image.sprite = spriteDefault;
             buttonAnswer.interactable = false;
             buttonAnswer.gameObject.SetActive(true);
@@ -130,7 +135,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     }
 
 
-    public void ShowAnswers(bool interactable=true)
+    public void ShowAnswers(bool interactable = true)
     {
         for (int i = 0; i < currentQuestionData.AnswersShuffled.Count; i++)
         {
@@ -146,6 +151,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     {
 
         int correctAnswerIndex = currentQuestionData.rightAnswer;
+        bool hasNotAnswered = indexAnswered == -1;
 
         for (int i = 0; i < currentQuestionData.AnswersShuffled.Count; i++)
         {
@@ -155,11 +161,15 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
             int index = buttonAnswer.transform.GetSiblingIndex();
 
-            if(index == indexAnswered || index == correctAnswerIndex)
+            if (hasNotAnswered)
+            {
+                buttonAnswer.image.sprite = spriteIncorrect;
+            }
+            else if (index == indexAnswered || index == correctAnswerIndex)
             {
                 buttonAnswer.image.sprite = index == correctAnswerIndex ? spriteCorrect : spriteIncorrect;
             }
-          
+
         }
 
         if (correctAnswerIndex == indexAnswered)
@@ -188,26 +198,27 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     /// <param name="questionNumber"></param>
     /// <param name="questionCount"></param>
     /// <param name="questionData"></param>
-    public void SetupQuestion(int questionNumber,int questionCount, QuestionData questionData)
+    public void SetupQuestion(int questionNumber, int questionCount, QuestionData questionData)
     {
         currentQuestionData = questionData;
         questionHistory.Add(questionData);
         currentQuestionNumber = questionNumber;
 
-        textTitle.text = "PERGUNTA"+" " + questionNumber + "/" + questionCount;
+        Debug.Log("SetupQuestion=" + questionData);
+        textTitle.text = "PERGUNTA" + " " + questionNumber + "/" + questionCount;
         textQuestion.text = questionData.question;
-        for(int i=0; i < questionData.AnswersShuffled.Count; i++)
+        for (int i = 0; i < questionData.AnswersShuffled.Count; i++)
         {
             var textAnswer = buttonAnswers[i].GetComponentInChildren<Text>(true);
             textAnswer.text = questionData.AnswersShuffled[i];
-            
+
         }
     }
 
     public static IEnumerator DoingQuestionCheck()
     {
         QuestionScreen.instance.Show();
-        QuestionScreen.instance.ShowCorrectAnswer();       
+        QuestionScreen.instance.ShowCorrectAnswer();
 
         yield return new WaitForSeconds(2);
 

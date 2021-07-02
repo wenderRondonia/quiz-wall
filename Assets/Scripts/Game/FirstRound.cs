@@ -12,28 +12,32 @@ public static class FirstRound
 
         yield return BallController.instance.AnimatingInitalBalls(ballCount: 4);
 
-        for (int i=1; i <= 2; i++)
+        for (int i = 1; i <= 2; i++)
         {
-            yield return DoingQuestionRound( question: i );
+            yield return DoingQuestionCycle(question: i);
         }
 
         MoneyGainedAtFirstRound = Prefs.GetMoney;
     }
 
-    static IEnumerator DoingQuestionRound(int question)
+    static IEnumerator DoingQuestionCycle(int question)
     {
 
         yield return BallController.UnlockingBalls(balls: 2);
 
-        yield return DoingQuestion(question: 1);
+        yield return ShowingQuestion(question: 1);
+
+        yield return SmallBallController.instance.WaitingAnySmallBalls();
+
+        QuestionScreen.instance.Hide();
+
+        yield return SmallBallController.instance.WaitingSmallBalls();
 
         SmallBallController.instance.SetupCorrectAnswer();
-        
+
         yield return QuestionScreen.DoingQuestionCheck();
 
         SmallBallController.instance.SetupCorrectAnswer();
-
-        yield return SmallBallController.instance.DoingSmallBalls();       
 
         SmallBallController.instance.ResetSmallBalls();
 
@@ -41,7 +45,7 @@ public static class FirstRound
 
     }
 
-    static IEnumerator DoingQuestion(int question)
+    static IEnumerator ShowingQuestion(int question)
     {
 
         QuestionScreen.instance.ResetQuestion();
@@ -59,9 +63,7 @@ public static class FirstRound
 
         QuestionScreen.instance.ShowAnswers();
 
-        yield return QuestionScreen.WaitingAnswer();
-
-        yield return new WaitForSeconds(1);
+        SmallBallController.instance.UnlockSmallBalls();
 
     }
 

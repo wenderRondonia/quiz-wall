@@ -25,8 +25,9 @@ public static class ThirdRound
         yield return BallController.instance.AnimatingInitalBalls(ballCount: 9);
 
 
-        for (int i=1; i <=3;i++) {
-                       
+        for (int i = 1; i <= 3; i++)
+        {
+
             yield return BallController.UnlockingBalls(
                 balls: 3
             );
@@ -44,8 +45,8 @@ public static class ThirdRound
 
             SmallBallController.instance.SetupCorrectAnswer();
 
-            yield return SmallBallController.instance.DoingSmallBalls();
-           
+            yield return SmallBallController.instance.UnlockAndWaitSmallBalls();
+
             SmallBallController.instance.ResetSmallBalls();
 
         }
@@ -70,7 +71,7 @@ public static class ThirdRound
 
         yield return UnlockingLastThreeGoodBalls();
 
-        
+
 
     }
 
@@ -83,7 +84,7 @@ public static class ThirdRound
             pickZones: PickZonesScreen.instance.GetZonesPicked()
         );
 
-        yield return SmallBallController.instance.DoingSmallBalls();
+        yield return SmallBallController.instance.UnlockAndWaitSmallBalls();
 
         SmallBallController.instance.ResetSmallBalls();
     }
@@ -104,10 +105,10 @@ public static class ThirdRound
 
             QuestionScreen.instance.pickZoneController.Show();
             yield return QuestionScreen.instance.pickZoneController.WaitingAnswer();
-            
+
             yield return BallController.UnlockingBalls(
                 balls: 1,
-                ballMultiplier: QuestionScreen.instance.pickBallMultiplier.indexAnswered+1,
+                ballMultiplier: QuestionScreen.instance.pickBallMultiplier.indexAnswered + 1,
                 pickZones: new[] { QuestionScreen.instance.pickZoneController.zoneSelected }
             );
 
@@ -120,7 +121,7 @@ public static class ThirdRound
 
             SmallBallController.instance.SetupCorrectAnswer();
 
-            yield return SmallBallController.instance.DoingSmallBalls();
+            yield return SmallBallController.instance.UnlockAndWaitSmallBalls();
 
             SmallBallController.instance.ResetSmallBalls();
 
@@ -134,7 +135,7 @@ public static class ThirdRound
             balls: 3
         );
 
-        yield return SmallBallController.instance.DoingSmallBalls();
+        yield return SmallBallController.instance.UnlockAndWaitSmallBalls();
 
         SmallBallController.instance.ResetSmallBalls();
     }
@@ -144,7 +145,7 @@ public static class ThirdRound
         yield return RoundScreen.ShowingNewRound(round: 3);
 
         yield return BallController.instance.AnimatingInitalBalls(
-            ballCount:4
+            ballCount: 4
         );
 
         yield return BallController.UnlockingBalls(balls: 4);
@@ -160,7 +161,7 @@ public static class ThirdRound
 
         yield return AnswersScreen.instance.ShowingCorrectAnswers();
 
-        
+
 
         if (SignContractScreen.instance.answer == ContractAnswer.Sign)
         {
@@ -170,10 +171,10 @@ public static class ThirdRound
         }
         else
         {
-          
+
             SmallBallController.instance.SetCorrectAnswers(answers);
 
-            yield return SmallBallController.instance.DoingSmallBalls();
+            yield return SmallBallController.instance.UnlockAndWaitSmallBalls();
 
             SmallBallController.instance.ResetSmallBalls();
 
@@ -212,7 +213,7 @@ public static class ThirdRound
         QuestionScreen.instance.ShowAnswers();
 
         yield return QuestionScreen.WaitingAnswer();
-        
+
         answers.Add(QuestionScreen.instance.IsAnsweredRight());
 
         yield return new WaitForSeconds(1.5f);

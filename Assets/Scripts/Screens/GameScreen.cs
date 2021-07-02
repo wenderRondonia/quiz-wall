@@ -26,14 +26,14 @@ public class GameScreen : Singleton<GameScreen>
     IEnumerator MainGameLoop()
     {
 
-        yield return FirstRound.DoingFirstRound();
-        
-        yield return CheckingEndGame();
-        
+        //yield return FirstRound.DoingFirstRound();
+
+        //yield return CheckingEndGame();
+
         yield return SecondRound.DoingSecondRound();
-        
+
         yield return CheckingEndGame();
-        
+
         yield return WonScreen.instance.ShowingWin();
 
         yield return ThirdRound.DoingThirdRound();
@@ -44,11 +44,11 @@ public class GameScreen : Singleton<GameScreen>
 
         LoadScreenManager.instance.LoadSceneScreen("Map");
 
-    }      
+    }
 
     IEnumerator CheckingEndGame()
     {
-        
+
 
         bool hasLost = Prefs.GetMoney <= 0;
 
@@ -63,8 +63,8 @@ public class GameScreen : Singleton<GameScreen>
         AdsManager.instance.ShowInterstitial();
     }
 
-    
-    public void LerpMoneyTo(float lastmoney ,float money)
+
+    public void LerpMoneyTo(float lastmoney, float money)
     {
         StartCoroutine(LerpingMoneyTo(lastmoney, money));
     }
@@ -77,9 +77,12 @@ public class GameScreen : Singleton<GameScreen>
         float delta = 0.1f;
         float currentMoney = Prefs.GetMoney;
 
-        if (money > lastmoney){
+        if (money > lastmoney)
+        {
             moneyBackground.color = Color.green;
-        }else{
+        }
+        else
+        {
             moneyBackground.color = Color.red;
         }
 
@@ -87,9 +90,9 @@ public class GameScreen : Singleton<GameScreen>
         {
             time += delta;
 
-            currentMoney = Mathf.Lerp(lastmoney, money, time/duration);
+            currentMoney = Mathf.Lerp(lastmoney, money, time / duration);
             SetMoney(currentMoney);
-                        
+
             yield return new WaitForSeconds(delta);
         }
 
@@ -101,7 +104,7 @@ public class GameScreen : Singleton<GameScreen>
     public void SetMoney(float money)
     {
         moneyAmount.text = money.ToStringMoney();
-        
+
     }
 
 }
