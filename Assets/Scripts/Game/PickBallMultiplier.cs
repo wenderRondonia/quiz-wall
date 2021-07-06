@@ -13,10 +13,10 @@ public class PickBallMultiplier : MonoBehaviour
 
     void Start()
     {
-        foreach(var button in buttons)
+        foreach (var button in buttons)
         {
             int index = button.transform.GetSiblingIndex();
-            button.onClick.AddListener(()=>OnButtonPickBall(index));
+            button.onClick.AddListener(() => OnButtonPickBall(index));
         }
     }
 
@@ -24,6 +24,7 @@ public class PickBallMultiplier : MonoBehaviour
     {
         panel.SetActive(true);
         indexAnswered = -1;
+        QuestionScreen.instance.InitTimer();
     }
 
     public void Hide()
@@ -35,7 +36,9 @@ public class PickBallMultiplier : MonoBehaviour
     {
         SoundManager.PlayClick();
         indexAnswered = index;
-       
+        QuestionScreen.instance.StopTimer();
+        Hide();
+
 
     }
 
@@ -43,7 +46,14 @@ public class PickBallMultiplier : MonoBehaviour
     {
         yield return new WaitUntil(() => indexAnswered != -1);
 
-        Hide();
+
+    }
+
+    public void SelectRandomAnswer()
+    {
+        indexAnswered = Random.Range(0, 3);
+
+        Debug.Log("PickBallMultiplier.SelectRandomAnswer");
 
     }
 }

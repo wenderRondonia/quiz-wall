@@ -70,6 +70,8 @@ public static class SecondRound
 
         QuestionScreen.instance.ShowAnswers(interactable: true);
 
+        QuestionScreen.instance.InitTimer();
+
         yield return QuestionScreen.WaitingAnswer();
 
         yield return QuestionScreen.DoingQuestionCheck();

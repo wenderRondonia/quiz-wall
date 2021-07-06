@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class QuestionScreen : BaseScreen<QuestionScreen>
 {
     public Text textTitle;
+    public Text timerText;
     public Text textQuestion;
     public Sprite spriteDefault;
     public Sprite spriteCorrect;
@@ -18,6 +19,8 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     public AudioSource SoundWrongAnswer;
     public AudioSource SoundAnswered;
 
+    public bool useTimer = true;
+
     [Header("Runtime")]
     public QuestionData currentQuestionData;
     public int currentQuestionNumber;
@@ -25,6 +28,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
 
     public List<QuestionData> questionHistory = new List<QuestionData>();
 
+    IEnumerator TimingCoroutine;
     public bool IsAnsweredRight()
     {
         if (currentQuestionData == null)
@@ -62,6 +66,69 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         base.Show();
 
         //ResetQuestion();
+        if (useTimer)
+        {
+            InitTimer();
+        }
+    }
+
+    public void InitTimer()
+    {
+        StopTimer();
+        timerText.gameObject.SetActive(true);
+
+        TimingCoroutine = Timing();
+        StartCoroutine(TimingCoroutine);
+
+    }
+
+    public void StopTimer()
+    {
+        timerText.gameObject.SetActive(false);
+
+        if (TimingCoroutine != null)
+        {
+            StopCoroutine(TimingCoroutine);
+            TimingCoroutine = null;
+        }
+    }
+
+    IEnumerator Timing()
+    {
+
+        for (int i = 15; i >= 0; i--)
+        {
+            timerText.text = "00:" + i.ToString("00");
+            yield return new WaitForSeconds(1);
+        }
+
+        if (pickZoneController.isActiveAndEnabled)
+        {
+            pickZoneController.SelectRandomAnswer();
+            pickZoneController.Hide();
+        }
+        else if (pickBallMultiplier.isActiveAndEnabled)
+        {
+            pickBallMultiplier.SelectRandomAnswer();
+            pickBallMultiplier.Hide();
+        }
+        else
+        {
+            SelectRandomAnswer();
+            Hide();
+
+        }
+
+        StopTimer();
+
+    }
+
+    public void SelectRandomAnswer()
+    {
+        indexAnswered = Random.Range(0, currentQuestionData.answers.Length);
+
+        Debug.Log("QuestionScreen.SelectRandomAnswer");
+
     }
 
     public void ResetQuestion()
@@ -100,9 +167,13 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         }
 
         SoundAnswered.Play();
+
         indexAnswered = index;
         buttonAnswers[index].image.color = Color.gray;
         buttonAnswers[index].interactable = false;
+
+        StopTimer();
+
         this.ExecuteIn(0.8f, () => { Hide(); });
 
     }
@@ -204,7 +275,7 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         questionHistory.Add(questionData);
         currentQuestionNumber = questionNumber;
 
-        Debug.Log("SetupQuestion=" + questionData);
+        Debug.Log("SetupQuestion=" + questionData + " AnswersShuffled=" + questionData.AnswersShuffled.ToStringValues());
         textTitle.text = "PERGUNTA" + " " + questionNumber + "/" + questionCount;
         textQuestion.text = questionData.question;
         for (int i = 0; i < questionData.AnswersShuffled.Count; i++)

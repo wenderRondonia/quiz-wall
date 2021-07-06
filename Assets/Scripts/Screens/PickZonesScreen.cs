@@ -17,11 +17,12 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
     public Text textTitle;
     public List<Button> buttonsZones;
 
+    IEnumerator TimingCoroutine;
+
     [Header("Runtime")]
 
     public int[] zonesPicked = new int[] { -1, -1, -1 };
     public bool useTimer = true;
-    public bool timeIsUp = false;
 
     public PickZoneType pickZoneType = PickZoneType.TwoZones;
 
@@ -77,6 +78,12 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
 
     }
 
+    public override void Hide()
+    {
+        base.Hide();
+        StopTimer();
+
+    }
     void OnButtonAnswer(int index)
     {
         SoundManager.PlayClick();
@@ -114,11 +121,22 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
 
     }
 
+    void StopTimer()
+    {
+        timer.SetActive(false);
+
+        if (TimingCoroutine != null)
+        {
+            StopCoroutine(TimingCoroutine);
+        }
+
+    }
     void InitTimer()
     {
-        timeIsUp = false;
+        StopTimer();
         timer.SetActive(true);
-        StartCoroutine(Timing());
+        TimingCoroutine = Timing();
+        StartCoroutine(TimingCoroutine);
 
     }
 
@@ -131,7 +149,16 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
             yield return new WaitForSeconds(1);
         }
 
-        timeIsUp = true;
+
+        SelectRandomAnswer();
+
+        Hide();
+
+    }
+
+    public void SelectRandomAnswer()
+    {
+        Debug.Log("PickZonesScreen.SelectRandomAnswer");
 
         for (int i = 0; i < zonesPicked.Length; i++)
         {
@@ -147,8 +174,6 @@ public class PickZonesScreen : BaseScreen<PickZonesScreen>
                 //Debug.Log("TimesUp picking zone i=" + i + " zone=" + zonesPicked[i]);
             }
         }
-
-        Hide();
 
     }
 }

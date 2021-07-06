@@ -30,11 +30,11 @@ public class GameScreen : Singleton<GameScreen>
 
         //yield return CheckingEndGame();
 
-        yield return SecondRound.DoingSecondRound();
+        //yield return SecondRound.DoingSecondRound();
 
-        yield return CheckingEndGame();
+        // yield return CheckingEndGame();
 
-        yield return WonScreen.instance.ShowingWin();
+        //yield return WonScreen.instance.ShowingWin();
 
         yield return ThirdRound.DoingThirdRound();
 
@@ -46,7 +46,7 @@ public class GameScreen : Singleton<GameScreen>
 
     }
 
-    IEnumerator CheckingEndGame()
+    public IEnumerator CheckingEndGame()
     {
 
 

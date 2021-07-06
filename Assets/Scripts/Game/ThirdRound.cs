@@ -113,6 +113,9 @@ public static class ThirdRound
             );
 
             QuestionScreen.instance.ShowQuestionText();
+
+            QuestionScreen.instance.InitTimer();
+
             QuestionScreen.instance.ShowAnswers(interactable: true);
 
             yield return QuestionScreen.WaitingAnswer();

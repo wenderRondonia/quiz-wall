@@ -1614,10 +1614,10 @@ RectTransform:
   m_Father: {fileID: 433001881}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -5.3327026, y: -169.63315}
-  m_SizeDelta: {x: 343.3614, y: 66.2655}
+  m_AnchorMin: {x: 0.5135373, y: 1}
+  m_AnchorMax: {x: 0.5135373, y: 1}
+  m_AnchoredPosition: {x: -13.332703, y: -152}
+  m_SizeDelta: {x: 343.3614, y: 58.2326}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &87914036
 MonoBehaviour:
@@ -1641,10 +1641,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 40
+    m_FontSize: 30
     m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 4
+    m_MinSize: 3
     m_MaxSize: 60
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -6825,6 +6825,85 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 9
+--- !u!1 &371005901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 371005902}
+  - component: {fileID: 371005904}
+  - component: {fileID: 371005903}
+  m_Layer: 5
+  m_Name: TimerText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &371005902
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371005901}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 433001881}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5135373, y: 1}
+  m_AnchorMax: {x: 0.5135373, y: 1}
+  m_AnchoredPosition: {x: -13.332703, y: -186.43805}
+  m_SizeDelta: {x: 150, y: 33.3566}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &371005903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371005901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 30
+    m_FontStyle: 1
+    m_BestFit: 0
+    m_MinSize: 3
+    m_MaxSize: 60
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 00:00
+--- !u!222 &371005904
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371005901}
+  m_CullTransparentMesh: 1
 --- !u!1 &374221676
 GameObject:
   m_ObjectHideFlags: 0
@@ -8039,13 +8118,14 @@ RectTransform:
   - {fileID: 1052405914}
   - {fileID: 1470908160}
   - {fileID: 1600707420}
+  - {fileID: 371005902}
   m_Father: {fileID: 655622206}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -3.6341019, y: 10.3434}
-  m_SizeDelta: {x: 577.1608, y: 1047.2522}
+  m_AnchoredPosition: {x: -0.6774, y: 10.3434}
+  m_SizeDelta: {x: 590.9591, y: 1047.2522}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &433001882
 MonoBehaviour:
@@ -36080,6 +36160,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 655622203}
   textTitle: {fileID: 87914036}
+  timerText: {fileID: 371005903}
   textQuestion: {fileID: 1470908161}
   spriteDefault: {fileID: 21300000, guid: 27e06bd6d789e7b49889b36ed79ed6df, type: 3}
   spriteCorrect: {fileID: 21300000, guid: 077d1a1eb1886dd409e1d621e429e938, type: 3}
@@ -36094,6 +36175,7 @@ MonoBehaviour:
   SoundRightAnswer: {fileID: 1740437996}
   SoundWrongAnswer: {fileID: 878972477}
   SoundAnswered: {fileID: 165429001}
+  useTimer: 1
   currentQuestionData:
     question: 
     answers: []
