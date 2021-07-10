@@ -48,7 +48,6 @@ public static class FirstRound
     static IEnumerator ShowingQuestion(int question)
     {
 
-        QuestionScreen.instance.ResetQuestion();
 
         QuestionScreen.instance.SetupQuestion(question, 2, QuestionReader.GetQuestionRandom());
 

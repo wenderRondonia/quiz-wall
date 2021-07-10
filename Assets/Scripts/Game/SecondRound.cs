@@ -48,29 +48,19 @@ public static class SecondRound
 
     static IEnumerator DoingQuestion(int question)
     {
-        QuestionScreen.instance.ResetQuestion();
 
         QuestionScreen.instance.SetupQuestion(question, 3, QuestionReader.GetQuestionRandom());
-        QuestionScreen.instance.ShowAnswers(interactable: false);
-        QuestionScreen.instance.HideQuestionText();
 
-        QuestionScreen.instance.pickZoneController.Show();
-        QuestionScreen.instance.Show();
+        QuestionScreen.instance.ShowWithPickZone();
 
-        yield return QuestionScreen.instance.pickZoneController.WaitingAnswer();
-
-        int zone = QuestionScreen.instance.pickZoneController.zoneSelected;
+        yield return QuestionScreen.WaitingPickZoneAnswer();
 
         yield return BallController.UnlockingBalls(
           balls: 1,
-          pickZones: new[] { zone }
+          pickZones: new[] { QuestionScreen.instance.pickZoneController.zoneSelected }
         );
 
-        QuestionScreen.instance.ShowQuestionText();
-
-        QuestionScreen.instance.ShowAnswers(interactable: true);
-
-        QuestionScreen.instance.InitTimer();
+        QuestionScreen.instance.PrepareForAnswer();
 
         yield return QuestionScreen.WaitingAnswer();
 

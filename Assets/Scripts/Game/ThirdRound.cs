@@ -32,7 +32,6 @@ public static class ThirdRound
                 balls: 3
             );
 
-            QuestionScreen.instance.ResetQuestion();
 
             QuestionScreen.instance.SetupQuestion(i, 3, QuestionReader.GetQuestionRandom());
 
@@ -93,15 +92,10 @@ public static class ThirdRound
     {
         for (int i = 1; i <= 3; i++)
         {
-            QuestionScreen.instance.ResetQuestion();
             QuestionScreen.instance.SetupQuestion(i, 3, QuestionReader.GetQuestionRandom());
 
-            QuestionScreen.instance.Show();
-            QuestionScreen.instance.HideQuestionText();
-            QuestionScreen.instance.ShowAnswers(interactable: false);
-
-            QuestionScreen.instance.pickBallMultiplier.Show();
-            yield return QuestionScreen.instance.pickBallMultiplier.WaitingAnswer();
+            QuestionScreen.instance.ShowWithPickBallMultiplier();
+            yield return QuestionScreen.WaitingPickBallMultiplierAnswer();
 
             QuestionScreen.instance.pickZoneController.Show();
             yield return QuestionScreen.instance.pickZoneController.WaitingAnswer();
@@ -112,11 +106,7 @@ public static class ThirdRound
                 pickZones: new[] { QuestionScreen.instance.pickZoneController.zoneSelected }
             );
 
-            QuestionScreen.instance.ShowQuestionText();
-
-            QuestionScreen.instance.InitTimer();
-
-            QuestionScreen.instance.ShowAnswers(interactable: true);
+            QuestionScreen.instance.PrepareForAnswer();
 
             yield return QuestionScreen.WaitingAnswer();
 
@@ -208,7 +198,6 @@ public static class ThirdRound
     {
         //Debug.Log("DoingQuestion=" + question);
 
-        QuestionScreen.instance.ResetQuestion();
 
         QuestionScreen.instance.SetupQuestion(question, 4, QuestionReader.GetQuestionRandom());
 

@@ -72,6 +72,36 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         }
     }
 
+    public void ShowWithPickBallMultiplier()
+    {
+        HideQuestionText();
+        ShowAnswers(interactable: false);
+
+        pickBallMultiplier.Show();
+        Show();
+    }
+
+
+    public void ShowWithPickZone()
+    {
+        ShowAnswers(interactable: false);
+        HideQuestionText();
+
+        pickZoneController.Show();
+
+        Show();
+    }
+
+    public static IEnumerator WaitingPickZoneAnswer()
+    {
+        yield return instance.pickZoneController.WaitingAnswer();
+    }
+
+    public static IEnumerator WaitingPickBallMultiplierAnswer()
+    {
+        yield return instance.pickBallMultiplier.WaitingAnswer();
+    }
+
     public void InitTimer()
     {
         StopTimer();
@@ -205,6 +235,14 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
         }
     }
 
+    public void PrepareForAnswer()
+    {
+        QuestionScreen.instance.ShowQuestionText();
+
+        QuestionScreen.instance.ShowAnswers(interactable: true);
+
+        QuestionScreen.instance.InitTimer();
+    }
 
     public void ShowAnswers(bool interactable = true)
     {
@@ -271,6 +309,8 @@ public class QuestionScreen : BaseScreen<QuestionScreen>
     /// <param name="questionData"></param>
     public void SetupQuestion(int questionNumber, int questionCount, QuestionData questionData)
     {
+        ResetQuestion();
+
         currentQuestionData = questionData;
         questionHistory.Add(questionData);
         currentQuestionNumber = questionNumber;
